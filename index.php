@@ -1,3 +1,16 @@
+<?php
+    ini_set ("display_errors", "On");
+	ini_set("error_reporting", E_ALL);
+	include_once ('/lib/functions.php'); 
+    if (isset($_POST) && !empty($_POST['usr']) && !empty($_POST['psw']) && !empty($_POST['tipo'])) {
+        $ok = check_login($POST['usr'], $POST['psw'], $POST['tipo']);
+        if ($ok) {
+            redirect('');
+        }
+    }else{
+        print('I campi non possono essere vuoti');
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,23 +26,24 @@
         <br>
         
         <div id="form_container">
-            <form id="myform">
-                <h3>Benvenuto in myUni</h3>
+            <form id="myform" method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
+                <h3>Login</h3>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Email utente</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name='usr'>
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
+                    <input type="password" class="form-control" id="exampleInputPassword1" name="psw">
                 </div>
                 <div class="mb-3">
-                <select class="form-select" aria-label="Default select example">
-                <option selected>Tipo utente</option>
-                    <option value="studente">Studente (@studente.it)</option>
-                    <option value="docente">Docente (@docente.it)</option>
-                    <option value="segreteria">Segreteria (@segreteria.it)</option>
-                </select>
+                    <select class="form-select" aria-label="Default select example" name="tipo">
+                    <option selected>Tipo utente</option>
+                        <option value="studente">Studente (@studente.it)</option>
+                        <option value="docente">Docente (@docente.it)</option>
+                        <option value="segreteria">Segreteria (@segreteria.it)</option>
+                    </select>
+                    <br>
                 </div>
                 <button type="submit" class="btn btn-primary">Entra</button>
             </form>

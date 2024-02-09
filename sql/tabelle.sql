@@ -1,7 +1,7 @@
 CREATE TABLE utenti (
     id uuid PRIMARY KEY DEFAULT get_random_uuid(),
     email varchar(30) NOT NULL UNIQUE,
-    password varchar(20) NOT NULL,
+    password text NOT NULL CHECK (password ~ '^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$'),
     nome varchar(30) NOT NULL,
     cognome varchar(30) NOT NULL,
 );
