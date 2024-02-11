@@ -1,3 +1,8 @@
+<?php
+    ini_set ("display_errors", "On");
+	ini_set("error_reporting", E_ALL);
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +14,17 @@
 </head>
 <body>
     <div class="container">
+        <?php
+            if (isset($_SESSION['feedback'])){
+                if ($_SESSION['feedback'] == false){
+                    ?>
+                        <div class="alert alert-danger" role="alert">
+                            Login errato! Reinserisci le credenziali grazie
+                        </div>
+                    <?php
+                }
+            }
+        ?>
         <img src="images/logo.png" alt="logo" class="center">
         <br>
         
@@ -27,7 +43,7 @@
                     <select class="form-select" aria-label="Default select example" name="tipo">
                         <option selected value="studente">Studente (@studente.it)</option>
                         <option value="docente">Docente (@docente.it)</option>
-                        <option value="segreteria">Segreteria (@segreteria.it)</option>
+                        <option value="segretario">Segreteria (@segreteria.it)</option>
                     </select>
                     <br>
                 </div>

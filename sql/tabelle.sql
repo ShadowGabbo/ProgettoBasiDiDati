@@ -20,13 +20,6 @@ CREATE TABLE studenti (
     corsoDiLaurea char(6) NOT NULL REFERENCES corsiDiLaurea(id) ON UPDATE CASCADE
 );
 
-CREATE TABLE storicoStudenti (
-    id uuid PRIMARY KEY REFERENCES utenti(id),
-    matricola char(6) NOT NULL UNIQUE,
-    motivo TIPO_MOTIVO NOT NULL,
-    corsoDiLaurea char(6) NOT NULL REFERENCES corsiDiLaurea(id) ON UPDATE CASCADE
-);
-
 CREATE TABLE docenti (
     id uuid PRIMARY KEY REFERENCES utenti(id)
 );
@@ -35,13 +28,21 @@ CREATE TABLE segreteria (
     id uuid PRIMARY KEY REFERENCES utenti(id)
 );
 
+
+CREATE TABLE storicoStudenti (
+    id uuid PRIMARY KEY REFERENCES utenti(id),
+    matricola char(6) NOT NULL UNIQUE,
+    motivo TIPO_MOTIVO NOT NULL,
+    corsoDiLaurea char(6) NOT NULL REFERENCES corsiDiLaurea(id) ON UPDATE CASCADE
+);
+
 CREATE TABLE insegnamenti (
-    id char(6) PRIMARY KEY,
-    nome varchar(30) NOT NULL,
+    id varchar(6) PRIMARY KEY,
+    nome text NOT NULL,
     descrizione text NOT NULL,
     anno TIPO_ANNO NOT NULL,
-    cfu TIPO_CFU NOT NULL,
-    corsoDiLaurea char(6) NOT NULL REFERENCES corsiDiLaurea(id) ON UPDATE CASCADE,
+    cfu smallint NOT NULL CHECK (cfu > 0 AND cfu <= 15),
+    corsoDiLaurea varchar(6) NOT NULL REFERENCES corsiDiLaurea(id) ON UPDATE CASCADE,
     docente uuid NOT NULL REFERENCES docenti(id) ON UPDATE CASCADE
 )
 
