@@ -1,27 +1,22 @@
 CREATE TABLE utenti (
-    id uuid PRIMARY KEY DEFAULT get_random_uuid(),
-    email varchar(30) NOT NULL UNIQUE,
-    password text NOT NULL CHECK (password ~ '^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$'),
-    nome varchar(30) NOT NULL,
-    cognome varchar(30) NOT NULL,
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    email text NOT NULL UNIQUE CHECK (email ~* '^[A-Za-z0-9._%-]+@studente|docente|segreteria.it$'),
+    password text NOT NULL CHECK (length(password) > 3),
+    tipo TIPO_UTENTI NOT NULL,
+    nome text NOT NULL CHECK (nome ~* '^.+$'),
+    cognome text NOT NULL CHECK (cognome ~* '^.+$')
 );
 
-INSERT INTO utenti AS(email, password, nome, cognome) VALUES ("gabry@studenti.unimi.it", "ciaoatutti", "Gabriele", "Sarti");
-INSERT INTO utenti AS(email, password, nome, cognome) VALUES ("mario@studenti.unimi.it", "ciaomario", "Mario", "Rossi");
-
 CREATE TABLE corsiDiLaurea (
-    id char(6) PRIMARY KEY,
-    nome varchar(50) NOT NULL,
+    id varchar(6) PRIMARY KEY,
+    nome text NOT NULL,
     tipo TIPO_CORSO_LAUREA NOT NULL,
     descrizione text NOT NULL
 );
 
--- politica di integrita' referenziale su corso di laurea ON UPDATE CASCADE
--- se modifico un corso di laurea lo modifico anche qui nella tabella studenti
--- se cancello un corso di laurea persiste il record studente
 CREATE TABLE studenti (
     id uuid PRIMARY KEY REFERENCES utenti(id),
-    matricola char(6) NOT NULL UNIQUE,
+    matricola char(6) NOT NULL UNIQUE CHECK (matricola ~* '^\d{6}$'),
     corsoDiLaurea char(6) NOT NULL REFERENCES corsiDiLaurea(id) ON UPDATE CASCADE
 );
 
@@ -34,11 +29,11 @@ CREATE TABLE storicoStudenti (
 
 CREATE TABLE docenti (
     id uuid PRIMARY KEY REFERENCES utenti(id)
-)
+);
 
 CREATE TABLE segreteria (
     id uuid PRIMARY KEY REFERENCES utenti(id)
-)
+);
 
 CREATE TABLE insegnamenti (
     id char(6) PRIMARY KEY,
