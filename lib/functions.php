@@ -24,17 +24,67 @@ function close_pg_connection($db){
 
 /**
  * Controlla il login (email tipo e password)
+ * 
+ * Restituisce un flag true se login andato correttamente false altrimenti
+ * Restituisce l'id dell utente loggato
  */
 function check_login($usr, $psw, $tipo){
     $db = open_pg_connection();
     $params = array($usr, $psw, $tipo); 
     $sql = 
-        "SELECT * FROM unimia.utenti AS U
+        "SELECT U.id FROM unimia.utenti AS U
          WHERE U.email = $1 AND U.password = $2 AND U.tipo = $3";
     $result = pg_prepare($db, 'login', $sql);
     $result = pg_execute($db, 'login', $params);
     close_pg_connection($db);
 
-    if (pg_fetch_assoc($result)) return true; // trovato il record
-    else return false;
+    if ($id = pg_fetch_assoc($result)) return array(true, $id); // trovato il record
+    else return array(false, null);
+}
+
+/**
+ * Restituisce la matricola dello studente con id
+ */
+function get_matricola($id){
+    $db = open_pg_connection();
+    $params = array($id); 
+    $sql = 
+        "SELECT S.matricola FROM unimia.studenti AS S
+         WHERE S.id = $1;";
+    $result = pg_prepare($db, 'matricola', $sql);
+    $result = pg_execute($db, 'matricola', $params);
+    close_pg_connection($db);
+
+    return pg_fetch_assoc($result)['matricola'];
+}
+
+/**
+ * Restituisce il nome del corso di studio dello studente con id
+ */
+function get_corsodistudi($id){
+    $db = open_pg_connection();
+    $params = array($id); 
+    $sql = 
+        "SELECT C.nome 
+         FROM unimia.studenti AS S
+         JOIN unimia.corsidilaurea AS C ON S.corsodilaurea = C.id
+         WHERE S.id = $1;";
+    $result = pg_prepare($db, 'matricola', $sql);
+    $result = pg_execute($db, 'matricola', $params);
+    close_pg_connection($db);
+
+    return pg_fetch_assoc($result)['nome'];
+}
+
+function get_credenziali($id){
+    $db = open_pg_connection();
+    $params = array($id); 
+    $sql = 
+        "SELECT U.* FROM unimia.utenti AS U
+        WHERE U.id = $1;";
+    $result = pg_prepare($db, 'credenziali', $sql);
+    $result = pg_execute($db, 'credenziali', $params);
+    close_pg_connection($db);
+
+    return pg_fetch_assoc($result);
 }

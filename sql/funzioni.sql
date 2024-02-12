@@ -5,14 +5,26 @@ CREATE OR REPLACE PROCEDURE add_student(
     _password text, 
     _nome text, 
     _cognome text,
-    _matricola char(6),
     _cdl char(6)
 ) 
 LANGUAGE plpgsql
 AS $$
-    DECLARE _id uuid;
+    DECLARE 
+        _id uuid;
+        _matricola char(6);
+        _m char(6);
     BEGIN    
         SET search_path TO unimia;
+        LOOP
+            _m := floor(random() * (999999 - 100000 + 1) + 100000)::CHAR(6);
+
+            IF NOT EXISTS (
+                SELECT matricola FROM studenti WHERE matricola = _m
+            ) THEN
+                _matricola := _m;
+                EXIT;
+            END IF;
+        END LOOP;
 
         -- inserimento delle credenziali dello studente
         INSERT INTO utenti(email, password, tipo, nome, cognome) VALUES (_email, _password, 'studente', _nome, _cognome) RETURNING id INTO _id;

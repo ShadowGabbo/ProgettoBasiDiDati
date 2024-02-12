@@ -9,7 +9,12 @@
             $email = $_POST['usr'];
             $psw = $_POST['psw'];
             $tipo = $_POST['tipo'];
-            $ok = check_login($email, $psw, $tipo);
+            $arr = check_login($email, $psw, $tipo);
+            $ok = $arr[0];
+            $id = $arr[1]['id'];
+            if (!is_null($id)){
+                $_SESSION['id'] = $id;
+            }
             $_SESSION['feedback'] = $ok;
             if ($ok) {
                 switch ($tipo) {

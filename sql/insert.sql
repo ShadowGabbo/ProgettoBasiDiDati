@@ -1,7 +1,8 @@
 -- inserimento di nuovi studenti
-CALL add_student('gabry@studente.it', 'ciaoatutti', 'Gabriele', 'Sarti', '975112', '034312');
-CALL add_student('mario@studente.it', 'ciaobella', 'Mario', 'Rossi', '975232', '098214');
-CALL add_student('rosa@studente.it', 'ciaorosa', 'Rosa', 'Verdi', '912112', '784512');
+CALL add_student('gabry@studente.it', 'ciaoatutti', 'Gabriele', 'Sarti', '034312');
+CALL add_student('mario@studente.it', 'ciaobella', 'Mario', 'Rossi', '098214');
+CALL add_student('rosa@studente.it', 'ciaorosa', 'Rosa', 'Verdi', '784512');
+CALL add_student('gianfranco@studente.it', 'gianni', 'Gianfranco', 'Gialli', '784512');
 
 -- inserimento di nuovi docenti
 CALL add_teacher('fernando@docente.it', 'fernando', 'Fernando', 'Neri');
