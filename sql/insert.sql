@@ -21,3 +21,11 @@ CALL add_cdl('098214', 'ai', 'magistrale', 'corso sulla inteligenza artificiale'
 CALL add_cdl('874124', 'biochimica', 'magistrale a ciclo unico', 'corso sulle piante');
 CALL add_cdl('981232', 'assistenza sanitaria', 'triennale', 'corso per infermiere');
 CALL add_cdl('784512', 'chimica', 'magistrale a ciclo unico', 'corso per i chimici');
+
+-- inserimento di nuovi insegnamenti
+CALL add_insegnamento('231562', 'basi di dati', 'per capire i db', '2', 12::smallint, '034312', uuid('f18d6bed-7022-430b-a549-aa8a7b763d27'), NULL); 
+CALL add_insegnamento('129813', 'algoritmi', 'strutture dati', '2', 12::smallint, '034312', uuid('84bf9cda-3bc2-4d6b-937c-00a2e1924a08'), NULL);
+CALL add_insegnamento('758192', 'programmazione 1', 'per iniziare', '1', 12::smallint, '034312', uuid('84bf9cda-3bc2-4d6b-937c-00a2e1924a08'), NULL);
+CALL add_insegnamento('364912', 'programmazione 2', 'oop oggetti evviva', '2', 6::smallint, '034312', uuid('84bf9cda-3bc2-4d6b-937c-00a2e1924a08'), '{758192}');
+CALL add_insegnamento('562418', 'reti', 'reti web', '3', 12::smallint, '034312', uuid('f18d6bed-7022-430b-a549-aa8a7b763d27'), '{758192, 231562}');
+

@@ -13,7 +13,7 @@
             <a class="nav-link" href="profilo.php">Profilo</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Iscriviti ad un esame</a>
+            <a class="nav-link" href="esami.php">Esami</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Esci</a>

@@ -114,3 +114,33 @@ AS $$
         END IF;
     END;
 $$;
+
+-- aggiunge un insegnamento (con responsabile e esami propedeutici)
+CREATE OR REPLACE PROCEDURE add_insegnamento(
+    _id varchar(6),
+    _nome text,
+    _descrizione text,
+    _anno TIPO_ANNO,
+    _cfu smallint,
+    _corsoDiLaurea varchar(6),
+    _docente uuid,
+    _propedeutici varchar(6)[]
+)
+LANGUAGE plpgsql
+AS $$
+    DECLARE
+        _propedeutico varchar(6);
+    BEGIN
+        SET search_path TO unimia;
+
+        -- inserisco il nuovo insegnamento
+        INSERT INTO insegnamenti(id, nome, descrizione, anno, cfu, corsoDiLaurea, docente) VALUES (_id, _nome, _descrizione, _anno, _cfu, _corsoDiLaurea, _docente);
+    
+        IF _propedeutici IS NOT NULL THEN
+            -- aggiungo gli esami propedeutici per l'insegnamento inserito
+            FOREACH _propedeutico IN ARRAY _propedeutici LOOP
+                INSERT INTO propedeuticita VALUES (_id, _propedeutico);
+            END LOOP;
+        END IF;
+    END;
+$$;
