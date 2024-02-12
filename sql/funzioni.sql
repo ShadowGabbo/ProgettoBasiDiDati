@@ -94,3 +94,23 @@ AS $$
         INSERT INTO corsiDiLaurea(id,nome,tipo,descrizione) VALUES (_id, _nome, _tipo, _desc);
     END;
 $$;
+
+-- modifica la password di un utente
+CREATE OR REPLACE PROCEDURE edit_password(
+    _id uuid, 
+    _newpassword text
+) 
+LANGUAGE plpgsql
+AS $$
+    BEGIN    
+        SET search_path TO unimia;
+
+        -- update password
+        UPDATE utenti SET password = _newpassword
+        WHERE id = _id;
+
+        IF NOT FOUND THEN
+            raise exception 'Utente non trovato'; 
+        END IF;
+    END;
+$$;

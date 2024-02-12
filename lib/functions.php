@@ -88,3 +88,14 @@ function get_credenziali($id){
 
     return pg_fetch_assoc($result);
 }
+
+function change_password($id, $newpassword){
+    $db = open_pg_connection();
+    $params = array($id, $newpassword); 
+    $sql = "CALL unimia.edit_password($1, $2);";
+    $result = pg_prepare($db, 'credenziali', $sql);
+    $result = pg_execute($db, 'credenziali', $params);
+    close_pg_connection($db);
+
+    return $result;
+}
