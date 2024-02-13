@@ -27,9 +27,18 @@
             <li><a class="dropdown-item" href="visualizzadocenti.php">Visualizza docenti</a></li>
           </ul>
         </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Esci</a>
-          </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Corsi di laurea
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="inseriscicorsi.php">Inserisci nuovo corso di laurea</a></li>
+            <li><a class="dropdown-item" href="visualizzacorsi.php">Visualizza corsi di laurea (cdl)</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="#">Esci</a>
+        </li>
         </ul>
       </div>
     </div>

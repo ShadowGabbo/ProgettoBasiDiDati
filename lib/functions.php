@@ -140,6 +140,25 @@ function get_teachers(){
     return $teachers;
 }
 
+function get_courses(){
+    $db = open_pg_connection();
+    $sql = "SELECT * FROM unimia.get_all_courses();";
+    $result = pg_prepare($db, 'ottieni corsi', $sql);
+    $result = pg_execute($db, 'ottieni corsi', array());
+    close_pg_connection($db);
+
+    $courses = array();
+    while($row = pg_fetch_assoc($result)){
+        $id = $row['_id'];
+        $nome = $row['_nome'];
+        $tipo = $row['_tipo'];
+        $descrizione = $row['_descrizione'];
+        $course = array($id, $nome, $tipo, $descrizione);
+        array_push($courses, $course);
+    }
+    return $courses;
+}
+
 function insert_student($email, $password, $nome, $cognome, $cdl){
     $db = open_pg_connection();
     $params = array($email, $password, $nome, $cognome, $cdl);

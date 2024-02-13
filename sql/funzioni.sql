@@ -44,3 +44,24 @@ AS $$
         ORDER BY U.cognome, U.nome;
     END;
 $$;
+
+-- restituisce tutti i corsi di laurea (cdl)
+CREATE OR REPLACE FUNCTION get_all_courses() 
+RETURNS TABLE(
+    _id varchar(6),
+    _nome text,
+    _tipo TIPO_CORSO_LAUREA,
+    _descrizione text
+) 
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+    BEGIN    
+        SET search_path TO unimia;
+
+        RETURN QUERY
+        SELECT C.id, C.nome, C.tipo, C.descrizione
+        FROM corsidilaurea AS C 
+        ORDER BY C.nome;
+    END;
+$$;
