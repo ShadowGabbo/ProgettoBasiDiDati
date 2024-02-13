@@ -11,26 +11,14 @@ LANGUAGE plpgsql
 AS $$
     DECLARE 
         _id uuid;
-        _matricola char(6);
-        _m char(6);
     BEGIN    
         SET search_path TO unimia;
-        LOOP
-            _m := floor(random() * (999999 - 100000 + 1) + 100000)::CHAR(6);
-
-            IF NOT EXISTS (
-                SELECT matricola FROM studenti WHERE matricola = _m
-            ) THEN
-                _matricola := _m;
-                EXIT;
-            END IF;
-        END LOOP;
 
         -- inserimento delle credenziali dello studente
         INSERT INTO utenti(email, password, tipo, nome, cognome) VALUES (_email, _password, 'studente', _nome, _cognome) RETURNING id INTO _id;
 
-        -- inserimento dello studente
-        INSERT INTO studenti(id, matricola, corsoDiLaurea) VALUES (_id, _matricola, _cdl);
+        -- inserimento dello studente (guardare il trigger che genera la matricola)
+        INSERT INTO studenti(id, corsoDiLaurea) VALUES (_id, _cdl);
     END;
 $$;
 
