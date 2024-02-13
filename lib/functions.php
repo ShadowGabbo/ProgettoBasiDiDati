@@ -159,6 +159,42 @@ function get_courses(){
     return $courses;
 }
 
+
+function get_name_course($id){
+    $db = open_pg_connection();
+    $sql = "SELECT C.nome FROM unimia.corsidilaurea AS C WHERE C.id = $1;";
+    $result = pg_prepare($db, 'ottieni nome', $sql);
+    $result = pg_execute($db, 'ottieni nome', array($id));
+    close_pg_connection($db);
+    return pg_fetch_assoc($result)['nome'];
+}
+
+
+/**
+ * Restituisce tutti gli insegnamenti dato l'id del corso
+ */
+function get_all_insegnamenti($id){
+    $db = open_pg_connection();
+    $sql = "SELECT * FROM unimia.get_all_insegnamenti($1);";
+    $result = pg_prepare($db, 'ottieni corsi', $sql);
+    $result = pg_execute($db, 'ottieni corsi', array($id));
+    close_pg_connection($db);
+
+    $insegnamenti = array();
+    while($row = pg_fetch_assoc($result)){
+        $id = $row['_id'];
+        $nome = $row['_nome'];
+        $descrizione = $row['_descrizione'];
+        $anno = $row['_anno'];
+        $cfu = $row['_cfu'];
+        $nome_docente = $row['_nome_docente'];
+        $insegnamento = array($id, $nome, $descrizione, $anno, $cfu, $nome_docente);
+        array_push($insegnamenti, $insegnamento);
+    }
+    //print_r($insegnamenti);
+    return $insegnamenti;
+}
+
 function insert_student($email, $password, $nome, $cognome, $cdl){
     $db = open_pg_connection();
     $params = array($email, $password, $nome, $cognome, $cdl);

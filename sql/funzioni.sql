@@ -65,3 +65,30 @@ AS $$
         ORDER BY C.nome;
     END;
 $$;
+
+-- restituisce tutti i corsi di laurea (cdl)
+CREATE OR REPLACE FUNCTION get_all_insegnamenti(
+    id_corso varchar(6)
+) 
+RETURNS TABLE(
+    _id varchar(6),
+    _nome text,
+    _descrizione text,
+    _anno TIPO_ANNO,
+    _cfu smallint,
+    _nome_docente text
+) 
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+    BEGIN    
+        SET search_path TO unimia;
+
+        RETURN QUERY
+        SELECT I.id, I.nome, I.descrizione, I.anno, I.cfu, CONCAT(U.nome, ' ', U.cognome)
+        FROM insegnamenti AS I 
+        INNER JOIN utenti AS U ON U.id = I.docente
+        WHERE I.corsodilaurea = id_corso
+        ORDER BY I.nome;
+    END;
+$$;
