@@ -120,3 +120,32 @@ function get_students(){
     }
     return $students;
 }
+
+function get_teachers(){
+    $db = open_pg_connection();
+    $sql = "SELECT * FROM unimia.get_all_teachers();";
+    $result = pg_prepare($db, 'ottieni docenti', $sql);
+    $result = pg_execute($db, 'ottieni docenti', array());
+    close_pg_connection($db);
+
+    $teachers = array();
+    while($row = pg_fetch_assoc($result)){
+        $id = $row['_id'];
+        $nome = $row['_nome'];
+        $cognome = $row['_cognome'];
+        $email = $row['_email'];
+        $teacher = array($id, $nome, $cognome, $email);
+        array_push($teachers, $teacher);
+    }
+    return $teachers;
+}
+
+function insert_student($email, $password, $nome, $cognome, $cdl){
+    $db = open_pg_connection();
+    $params = array($email, $password, $nome, $cognome, $cdl);
+    $sql = "CALL unimia.add_student($1, $2, $3, $4, $5);";
+    $result = pg_prepare($db, 'inserisci studente', $sql);
+    $result = pg_execute($db, 'inserisci studente', $params);
+    close_pg_connection($db);
+    return $result;
+}

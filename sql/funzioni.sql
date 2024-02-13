@@ -22,3 +22,25 @@ AS $$
         ORDER BY U.cognome, U.nome;
     END;
 $$;
+
+-- restituisce tutti i docenti
+CREATE OR REPLACE FUNCTION get_all_teachers() 
+RETURNS TABLE(
+    _id uuid,
+    _nome text,
+    _cognome text,
+    _email text
+) 
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+    BEGIN    
+        SET search_path TO unimia;
+
+        RETURN QUERY
+        SELECT U.id, U.nome, U.cognome, U.email
+        FROM utenti AS U 
+        INNER JOIN docenti AS D ON D.id = U.id
+        ORDER BY U.cognome, U.nome;
+    END;
+$$;
