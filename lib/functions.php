@@ -178,3 +178,13 @@ function insert_teacher($email, $password, $nome, $cognome){
     close_pg_connection($db);
     return $result;
 }
+
+function insert_courses($id, $nome, $tipo, $descrizione){
+    $db = open_pg_connection();
+    $params = array($id, $nome, $tipo, $descrizione);
+    $sql = "CALL unimia.add_cdl($1, $2, $3, $4);";
+    $result = pg_prepare($db, 'inserisci corso', $sql);
+    $result = pg_execute($db, 'inserisci corso', $params);
+    close_pg_connection($db);
+    return $result;
+}
