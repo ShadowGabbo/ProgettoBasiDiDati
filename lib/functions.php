@@ -149,3 +149,13 @@ function insert_student($email, $password, $nome, $cognome, $cdl){
     close_pg_connection($db);
     return $result;
 }
+
+function insert_teacher($email, $password, $nome, $cognome){
+    $db = open_pg_connection();
+    $params = array($email, $password, $nome, $cognome);
+    $sql = "CALL unimia.add_teacher($1, $2, $3, $4);";
+    $result = pg_prepare($db, 'inserisci docente', $sql);
+    $result = pg_execute($db, 'inserisci docente', $params);
+    close_pg_connection($db);
+    return $result;
+}
