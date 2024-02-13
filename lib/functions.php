@@ -99,3 +99,24 @@ function change_password($id, $newpassword){
 
     return $result;
 }
+
+function get_students(){
+    $db = open_pg_connection();
+    $sql = "SELECT * FROM unimia.get_all_students();";
+    $result = pg_prepare($db, 'ottieni studenti', $sql);
+    $result = pg_execute($db, 'ottieni studenti', array());
+    close_pg_connection($db);
+
+    $students = array();
+    while($row = pg_fetch_assoc($result)){
+        $id = $row['_id'];
+        $nome = $row['_nome'];
+        $cognome = $row['_cognome'];
+        $email = $row['_email'];
+        $matricola = $row['_matricola'];
+        $nomecorso = $row['_nome_corsodilaurea'];
+        $student = array($id, $nome, $cognome, $email, $matricola, $nomecorso);
+        array_push($students, $student);
+    }
+    return $students;
+}

@@ -38,3 +38,6 @@ CALL add_insegnamento('568910', 'machine learning', 'corso di ai fondamentale', 
 
 -- dovrebbe sollevare eccezione lanciata dal trigger perche' l'insegnamento non puo' essere erogato al quarto anno se il cdl ha 3 anni (triennale)
 CALL add_insegnamento('817829', 'sistemi operativi', 'imparare ad usare linux', '4', 12::smallint, '098214', uuid('e4910308-f130-4373-a495-d37b75cb38e0'), NULL);
+
+-- dovrebbe sollevare eccezione lanciata dal trigger perche' l'insegnamento non puo' essere propedeutico a se stesso
+CALL add_insegnamento('817829', 'sistemi operativi', 'imparare ad usare linux', '1', 12::smallint, '098214', uuid('e4910308-f130-4373-a495-d37b75cb38e0'), '{817829}');

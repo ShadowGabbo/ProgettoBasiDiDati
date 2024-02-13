@@ -91,3 +91,28 @@ CREATE OR REPLACE TRIGGER i_u_check_anno_insegnamento
     BEFORE INSERT OR UPDATE ON insegnamenti
     FOR EACH ROW
     EXECUTE PROCEDURE check_anno_insegnamento();
+
+
+CREATE OR REPLACE FUNCTION check_propedeuticita() RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+    BEGIN
+        SET search_path TO unimia;
+
+        -- controllo se un insegnamento e' propedeutico a se stesso
+        IF NEW.insegnamento = NEW.insegnamentopropedeutico THEN
+            RAISE EXCEPTION 'Un insegnamento non puo essere propedeutico a se stesso (propedeuticita ciclica)';
+        END IF;
+
+        -- controllo se ho un ciclo di propedeuticita'
+
+
+        RETURN NEW; -- se i controlli vanno bene faccio la insert/update
+    END;
+$$;
+
+CREATE OR REPLACE TRIGGER i_u_check_propedeuticita
+    BEFORE INSERT OR UPDATE ON propedeuticita
+    FOR EACH ROW
+    EXECUTE PROCEDURE check_propedeuticita();
