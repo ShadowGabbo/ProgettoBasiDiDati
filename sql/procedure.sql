@@ -133,6 +133,30 @@ AS $$
     END;
 $$;
 
+-- aggiunge un appello per un insegnamento
+-- crea un appello
+CREATE OR REPLACE PROCEDURE add_appello (
+  _insegnamento VARCHAR(6),
+  _data DATE,
+  _ora TIME,
+  _luogo TEXT
+)
+LANGUAGE plpgsql
+AS $$
+    BEGIN
+
+        SET search_path TO unimia;
+
+        IF Now() > _data THEN
+        raise exception E'Appello nel passato non possibile';
+        END IF;
+
+        INSERT INTO appelli(insegnamento, data, orario, luogo)
+        VALUES (_insegnamento, _data, _ora, _luogo);
+
+    END;
+$$;
+
 -- elimina uno studente dato il suo id (spostandolo nell'archivio grazie al trigger)
 -- manca trigger e tabella
 CREATE OR REPLACE PROCEDURE remove_student (

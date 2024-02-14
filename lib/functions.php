@@ -185,6 +185,51 @@ function get_name_course($id){
     return pg_fetch_assoc($result)['nome'];
 }
 
+function get_insegnamenti_docente($id){
+    $db = open_pg_connection();
+    $sql = "SELECT * FROM unimia.get_insegnamenti_docente($1);";
+    $result = pg_prepare($db, 'ottieni insegnamenti docente', $sql);
+    $result = pg_execute($db, 'ottieni insegnamenti docente', array($id));
+    close_pg_connection($db);
+
+    $insegnamenti = array();
+    while($row = pg_fetch_assoc($result)){
+        $id = $row['_id'];
+        $nome = $row['_nome'];
+        $descrizione = $row['_descrizione'];
+        $anno = $row['_anno'];
+        $cfu = $row['_cfu'];
+        $nome_corso = $row['_nome_corsodilaurea'];
+        $insegnamento = array($id, $nome, $descrizione, $anno, $cfu, $nome_corso);
+        array_push($insegnamenti, $insegnamento);
+    }
+    return $insegnamenti;
+}
+
+/**
+ * Restituisce il candario appelli del docente
+ */
+function calendario_docente($id){
+    $db = open_pg_connection();
+    $sql = "select * from unimia.get_appelli_docente($1);";
+    $result = pg_prepare($db, 'ottieni nome', $sql);
+    $result = pg_execute($db, 'ottieni nome', array($id));
+    close_pg_connection($db);
+
+    $appelli = array();
+    while($row = pg_fetch_assoc($result)){
+        $id = $row['id'];
+        $nome_insegnamento = $row['nome_insegnamento'];
+        $nome_corso = $row['nome_corso'];
+        $data = $row['data'];
+        $orario = $row['orario'];
+        $luogo = $row['luogo'];
+        $appello = array($id, $data, $orario, $luogo, $nome_insegnamento, $nome_corso);
+        array_push($appelli, $appello);
+    }
+    return $appelli;
+}
+
 
 /**
  * Restituisce tutti gli insegnamenti dato l'id del corso

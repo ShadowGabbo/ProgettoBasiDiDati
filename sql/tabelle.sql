@@ -47,11 +47,11 @@ CREATE TABLE insegnamenti (
 )
 
 CREATE TABLE appelli (
-    id uuid PRIMARY KEY DEFAULT get_random_uuid(),
-    data DATA NOT NULL,
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    data DATE NOT NULL,
     orario TIME NOT NULL, 
     luogo text NOT NULL,
-    insegnamento char(6) NOT NULL REFERENCES insegnamenti(id) ON UPDATE CASCADE
+    insegnamento varchar(6) NOT NULL REFERENCES insegnamenti(id) ON UPDATE CASCADE
 )
 
 CREATE TABLE iscrizioniEsami (

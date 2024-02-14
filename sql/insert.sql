@@ -41,3 +41,6 @@ CALL add_insegnamento('817829', 'sistemi operativi', 'imparare ad usare linux', 
 
 -- dovrebbe sollevare eccezione lanciata dal trigger perche' l'insegnamento non puo' essere propedeutico a se stesso
 CALL add_insegnamento('817829', 'sistemi operativi', 'imparare ad usare linux', '1', 12::smallint, '098214', uuid('e4910308-f130-4373-a495-d37b75cb38e0'), '{817829}');
+
+-- inserimento di appelli
+CALL add_appello('817829', DATE('2024-03-23'), TIME('12:30:00'), 'Via buonarroti 2, 25');

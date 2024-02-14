@@ -92,3 +92,57 @@ AS $$
         ORDER BY I.nome;
     END;
 $$;
+
+-- restituisce gli insegnamenti di cui e' responsabile/insegna (max 3)
+CREATE OR REPLACE FUNCTION get_insegnamenti_docente(
+    _docente uuid
+)RETURNS TABLE(
+    _id varchar(6),
+    _nome text,
+    _descrizione text,
+    _anno TIPO_ANNO,
+    _cfu smallint,
+    _nome_corsoDiLaurea text
+)
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+    BEGIN    
+        SET search_path TO unimia;
+
+        RETURN QUERY
+        SELECT I.id, I.nome, I.descrizione, I.anno, I.cfu, C.nome
+        FROM insegnamenti AS I
+        INNER JOIN corsidilaurea AS C ON C.id = I.corsodilaurea
+        WHERE I.docente = _docente;
+    END;
+$$;
+
+CREATE OR REPLACE FUNCTION get_appelli_docente(
+    _docente uuid
+)RETURNS TABLE(
+    id uuid,
+    data DATE,
+    orario TIME, 
+    luogo text,
+    nome_insegnamento text,
+    nome_corso text
+)
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+    BEGIN    
+        SET search_path TO unimia;
+
+        RETURN QUERY
+        WITH insegnamenti_docente AS (
+            SELECT I.id, I.nome AS nome_insegnamento, C.nome AS nome_corso
+            FROM insegnamenti AS I
+            INNER JOIN corsidilaurea AS C ON C.id = I.corsodilaurea
+            WHERE I.docente = _docente
+        )        
+        SELECT A.id, A.data, A.orario, A.luogo, I.nome_insegnamento, I.nome_corso
+        FROM insegnamenti_docente AS I
+        INNER JOIN appelli AS A ON A.insegnamento = I.id;
+    END;
+$$;
