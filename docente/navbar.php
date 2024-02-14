@@ -16,13 +16,19 @@
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="visualizzainsegnamenti.php">Visualizza insegnamenti</a></li>
           </ul>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="calendarioesami.php">Calendario esami</a>
-          </li>
-        <li class="nav-item">
-        <a class="nav-link" href="#">Esci</a>
-        </li>
+            </li>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Appelli
+            </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="inserisciappelli.php">Crea appello</a></li>
+                    <li><a class="dropdown-item" href="calendarioesami.php">Calendario esami (I miei appelli)</a></li>  
+                </ul>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#">Esci</a>
+            </li>
         </ul>
       </div>
     </div>
