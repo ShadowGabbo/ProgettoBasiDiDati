@@ -22,6 +22,24 @@
   <body>
   <div class="container-fluid">
     <?php include_once("navbar.php"); ?>
+    <?php
+        if (isset($_SESSION['remove_student'])){
+            if ($_SESSION['remove_student'] == false){
+                ?>
+                    <div class="alert alert-danger" role="alert">
+                        Problema con l'archiviazione dello studente
+                    </div>
+                <?php
+            }else{
+                ?>
+                    <div class="alert alert-success" role="alert">
+                        Archiviato studente con successo
+                    </div>
+                <?php
+            }
+        }
+    ?>
+
     <h1>Visualizza studenti</h1>
     <table class="table table-dark table-striped">
         <thead>
@@ -39,16 +57,25 @@
         <?php foreach ($students as $student) {?>
             <tr>
                 <?php $id = $student ?>
-                <td><?php print($student[0]) ?></td>
+                <td><?php 
+                    $id = $student[0];
+                    print($student[0]) ?></td>
                 <td><?php print($student[1]) ?></td>
                 <td><?php print($student[2]) ?></td>
                 <td><?php print($student[3]) ?></td>
                 <td><?php print($student[4]) ?></td>
                 <td><?php print($student[5]) ?></td>
-                <form action='../lib/rimuovistudente.php' method='get'>
-                    <input type='hidden' name="id" value='<?php echo $student[0]; ?>'>
-                    <td><button type="submit" class="btn btn-danger">Elimina</button></td>
-                </form>
+                <td>
+                <div class="dropdown">
+                    <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Elimina
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href='../lib/rimuovistudente.php?id=<?php echo $id?>&motivazione=rinuncia'>Rinuncia</a></li>
+                            <li><a class="dropdown-item" href='../lib/rimuovistudente.php?id=<?php echo $id?>&motivazione=laurea'>Laurea</a></li>
+                    </ul>
+                    </div>
+                </td>
             </tr>
         <?php } ?>
     </table>

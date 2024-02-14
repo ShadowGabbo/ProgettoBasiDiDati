@@ -7,20 +7,17 @@
     if (isset($_GET)){
         if (!empty($_GET['id'])) {
             $id = $_GET['id'];
-            print($id);
-            /*
-            $ok = insert_teaching($id, $nome, $descrizione, $anno, $cfu, $corso, $docente, $insegnamenti_propedeutici);
+            $ok = remove_teacher($id);
             if ($ok) {
-                $_SESSION['insert_teaching'] = true;
-                redirect('../segreteria/inserisciinsegnamenti.php');
+                $_SESSION['remove_teacher'] = true;
+                redirect('../segreteria/visualizzadocenti.php');
             }else{
-                $_SESSION['insert_teaching'] = false;
-                //$error = parseError(pg_last_error());
-                redirect('../segreteria/inserisciinsegnamenti.php');
+                $_SESSION['remove_teacher'] = false;
+                $error = parseError(pg_last_error());
+                redirect('../segreteria/visualizzadocenti.php');
                 }
-                */
         }else{
-            $_SESSION['insert_teaching'] = false;
-            redirect('../segreteria/inserisciinsegnamenti.php');
+            $_SESSION['remove_teacher'] = false;
+            redirect('../segreteria/visualizzadocenti.php');
         }
     }

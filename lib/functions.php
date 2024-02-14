@@ -278,3 +278,23 @@ function insert_teaching($id, $nome, $descrizione, $anno, $cfu, $corso, $docente
         return $result;
     }
 }
+
+function remove_student($id, $motivazione){
+    $db = open_pg_connection();
+    $params = array($motivazione, $id);
+    $sql = "CALL unimia.archivia_studente($1, $2);";
+    $result = pg_prepare($db, 'rimuovi studente', $sql);
+    $result = pg_execute($db, 'rimuovi studente', $params);
+    close_pg_connection($db);
+    return $result;
+}
+
+function remove_teacher($id){
+    $db = open_pg_connection();
+    $params = array($id);
+    $sql = "CALL unimia.delete_docente($1);";
+    $result = pg_prepare($db, 'rimuovi docente', $sql);
+    $result = pg_execute($db, 'rimuovi docente', $params);
+    close_pg_connection($db);
+    return $result;
+}

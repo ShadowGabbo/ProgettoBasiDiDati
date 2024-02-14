@@ -135,3 +135,10 @@ CREATE OR REPLACE TRIGGER i_u_check_propedeuticita
     BEFORE INSERT OR UPDATE ON propedeuticita
     FOR EACH ROW
     EXECUTE PROCEDURE check_propedeuticita();
+
+-- TO-DO
+-- DA FARE LA FUNZIONE 
+CREATE OR REPLACE TRIGGER d_archivia_studente
+    BEFORE DELETE ON studenti
+    FOR EACH ROW
+    EXECUTE PROCEDURE archivia_studente();

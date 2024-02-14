@@ -22,6 +22,23 @@
   <body>
   <div class="container-fluid">
     <?php include_once("navbar.php"); ?>
+    <?php
+        if (isset($_SESSION['remove_teacher'])){
+            if ($_SESSION['remove_teacher'] == false){
+                ?>
+                    <div class="alert alert-danger" role="alert">
+                        Problema con l'eliminazione del docente
+                    </div>
+                <?php
+            }else{
+                ?>
+                    <div class="alert alert-success" role="alert">
+                        Eliminato docente con successo
+                    </div>
+                <?php
+            }
+        }
+    ?>
     <h1>Visualizza docenti</h1>
     <table class="table table-dark table-striped">
         <thead>

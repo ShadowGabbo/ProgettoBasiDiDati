@@ -132,3 +132,66 @@ AS $$
         END IF;
     END;
 $$;
+
+-- elimina uno studente dato il suo id (spostandolo nell'archivio grazie al trigger)
+-- manca trigger e tabella
+CREATE OR REPLACE PROCEDURE remove_student (
+    _id uuid
+)
+LANGUAGE plpgsql
+AS $$
+    BEGIN
+
+    SET search_path TO unimia;
+
+    DELETE FROM studenti
+    WHERE id = _id;
+END;
+$$;
+
+-- archivia uno studente per una motivazione 
+-- differenza con il trigger sotto
+CREATE OR REPLACE PROCEDURE archivia_studente(
+    _motivazione TIPO_MOTIVO,
+    _id uuid
+)
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+        _studente unimia.studenti%ROWTYPE;
+    BEGIN
+
+    SET search_path TO unimia;
+
+    -- salva i dati dello studente
+    SELECT * INTO _studente FROM studenti WHERE id = _id;
+    -- elimina lo studete
+    DELETE FROM studenti WHERE id = _id;
+
+    -- ATTENZIONE MANCA L'ARCHIVIAZIONE DEGLI ESAMI
+
+    -- inserisce nell'archivio studenti quello appena eliminato con la motivazione personalizzata
+    INSERT INTO storicostudenti
+    VALUES (_studente.id, _studente.matricola, _motivazione , _studente.corsodilaurea);
+
+    END;
+$$;
+
+-- elimia il docente (e il suo utente associato se non ci sono vincoli di foreign key)
+CREATE OR REPLACE PROCEDURE delete_docente (
+  _id uuid
+)
+  LANGUAGE plpgsql
+  AS $$
+    BEGIN
+
+      SET search_path TO unimia;
+
+      DELETE FROM docenti
+      WHERE id = _id;
+
+      DELETE FROM utenti
+      WHERE id = _id;
+
+    END;
+  $$;
