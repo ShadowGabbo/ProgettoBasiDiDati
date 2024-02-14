@@ -32,6 +32,7 @@
             <th scope="col">Email</th>
             <th scope="col">Matricola</th>
             <th scope="col">Corso di Laurea</th>
+            <th scope="col">Elimina studente</th>
         </tr>
     </thead>
     <tbody>
@@ -44,6 +45,10 @@
                 <td><?php print($student[3]) ?></td>
                 <td><?php print($student[4]) ?></td>
                 <td><?php print($student[5]) ?></td>
+                <form action='../lib/rimuovistudente.php' method='get'>
+                    <input type='hidden' name="id" value='<?php echo $student[0]; ?>'>
+                    <td><button type="submit" class="btn btn-danger">Elimina</button></td>
+                </form>
             </tr>
         <?php } ?>
     </table>

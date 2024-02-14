@@ -30,6 +30,7 @@
             <th scope="col">Nome</th>
             <th scope="col">Cognome</th>
             <th scope="col">Email</th>
+            <th scope="col">Elimina docente</th>
         </tr>
     </thead>
     <tbody>
@@ -39,6 +40,10 @@
                 <td><?php print($teacher[1]) ?></td>
                 <td><?php print($teacher[2]) ?></td>
                 <td><?php print($teacher[3]) ?></td>
+                <form action='../lib/rimuovidocente.php' method='get'>
+                    <input type='hidden' name="id" value='<?php echo $teacher[0]; ?>'>
+                    <td><button type="submit" class="btn btn-danger">Elimina</button></td>
+                </form>
             </tr>
         <?php } ?>
     </table>

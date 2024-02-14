@@ -120,7 +120,7 @@ AS $$
             FROM propedeutici AS P
             INNER JOIN propedeuticita AS P2 ON P.insegnamentopropedeutico = P2.insegnamento
         )
-        SELECT COUNT(*) INTO _counter FROM propedeutici AS P
+        SELECT COUNT(*) INTO _counter FROM propedeutici AS P    
         WHERE P.insegnamentopropedeutico = NEW.insegnamento;
 
         IF _counter > 0 THEN
