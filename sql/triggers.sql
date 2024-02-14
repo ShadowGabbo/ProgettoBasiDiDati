@@ -97,6 +97,7 @@ CREATE OR REPLACE FUNCTION check_propedeuticita() RETURNS TRIGGER
 LANGUAGE plpgsql
 AS $$
     DECLARE 
+        _counter INTEGER;
     BEGIN
         SET search_path TO unimia;
 
@@ -106,7 +107,25 @@ AS $$
         END IF;
 
         -- controllo se ho un ciclo di propedeuticita'
+        WITH RECURSIVE propedeutici AS (
+            -- caso base  
+            -- trovo tutte le propedeuticita' che ha l'insegnamento propedeutico che ho in NEW
+            SELECT P.insegnamentopropedeutico
+            FROM propedeuticita AS P
+            WHERE P.insegnamento = NEW.insegnamentopropedeutico
+        UNION
+            -- passo ricorsivo
+            -- cerca dalla tabella temporanea 
+            SELECT P2.insegnamentopropedeutico
+            FROM propedeutici AS P
+            INNER JOIN propedeuticita AS P2 ON P.insegnamentopropedeutico = P2.insegnamento
+        )
+        SELECT COUNT(*) INTO _counter FROM propedeutici AS P
+        WHERE P.insegnamentopropedeutico = NEW.insegnamento;
 
+        IF _counter > 0 THEN
+            raise exception 'Propedeuticità ciclica trovata';
+        END IF;
 
         RETURN NEW; -- se i controlli vanno bene faccio la insert/update
     END;

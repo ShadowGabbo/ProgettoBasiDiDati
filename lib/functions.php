@@ -6,6 +6,22 @@ function redirect($url, $permanent = false) {
     header("Location: $url", true, $permanent ? 301 : 302);
     exit();
 }
+
+/**
+ * Per debug
+ */
+function parseError($error) {
+    $startPos = strpos($error, "ERROR:");
+  
+    $endPos1 = strpos($error, "DETAIL"); // end position for "default" errors
+    $endPos2 = strpos($error, "CONTEX"); // end position for custom trigger exceptions
+    
+    $endPos1 = $endPos1 ? $endPos1 : PHP_INT_MAX;
+    $endPos2 = $endPos2 ? $endPos2 : PHP_INT_MAX;
+  
+    return substr($error, $startPos + 7, min($endPos1, $endPos2) - $startPos - 8);
+  }
+
 /**
  * Apre la connessione con il server db
  */
@@ -223,4 +239,42 @@ function insert_courses($id, $nome, $tipo, $descrizione){
     $result = pg_execute($db, 'inserisci corso', $params);
     close_pg_connection($db);
     return $result;
+}
+
+function to_pg_array($set) {
+    settype($set, 'array'); 
+    $result = array();
+    foreach ($set as $t) {
+        if (is_array($t)) {
+            $result[] = to_pg_array($t);
+        } else {
+            $t = str_replace('"', '\\"', $t); 
+            if (! is_numeric($t)) 
+                $t = '"' . $t . '"';
+            $result[] = $t;
+        }
+    }
+    return '{' . implode(",", $result) . '}'; // format
+}
+
+function insert_teaching($id, $nome, $descrizione, $anno, $cfu, $corso, $docente, $insegnamenti_propedeutici){
+    $db = open_pg_connection();
+    $params = array();
+    if (!$insegnamenti_propedeutici){
+        // array vuoto
+        $params = array($id, $nome, $descrizione, $anno, $cfu, $corso, $docente);
+        $sql = "CALL unimia.add_insegnamento($1, $2, $3, $4, $5::smallint, $6, $7, NULL);";
+        $result = pg_prepare($db, 'inserisci insegnamento', $sql);
+        $result = pg_execute($db, 'inserisci insegnamento', $params);
+        close_pg_connection($db);
+        return $result;
+    }else{
+        // array con valori
+        $params = array($id, $nome, $descrizione, $anno, $cfu, $corso, $docente, to_pg_array($insegnamenti_propedeutici));
+        $sql = "CALL unimia.add_insegnamento($1, $2, $3, $4, $5::smallint, $6, $7, $8);";
+        $result = pg_prepare($db, 'inserisci insegnamento', $sql);
+        $result = pg_execute($db, 'inserisci insegnamento', $params);
+        close_pg_connection($db);
+        return $result;
+    }
 }

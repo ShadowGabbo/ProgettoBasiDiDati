@@ -41,7 +41,7 @@
             Insegnamenti
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="inserisciinsegnamento.php">Inserisci nuovo insegnamento</a></li>
+            <li><a class="dropdown-item" href="inserisciinsegnamenti.php">Inserisci nuovo insegnamento</a></li>
             <li><a class="dropdown-item" href="visualizzainsegnamenti.php">Visualizza insegnamenti per corso di laurea</a></li>
           </ul>
         </li>
