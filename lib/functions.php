@@ -411,6 +411,26 @@ function get_iscrizioni_studente($id_studente){
 
 }
 
+function get_esiti_studente($id){
+    $db = open_pg_connection();
+    $params = array($id);
+    $sql = "SELECT * FROM unimia.get_esiti_studente($1);";
+    $result = pg_prepare($db, 'studente esiti', $sql);
+    $result = pg_execute($db, 'studente esiti', $params);
+    close_pg_connection($db);
+    
+    $esiti = array();
+    while($row = pg_fetch_assoc($result)){
+        $id = $row['_id_appello'];
+        $nome_insegnamento = $row['_nome_insegnamento'];
+        $data = $row['_data'];
+        $voto = $row['_voto'];
+        $esito = array($id, $nome_insegnamento, $data, $voto);
+        array_push($esiti, $esito);
+    }
+    return $esiti;
+}
+
 function remove_student($id, $motivazione){
     $db = open_pg_connection();
     $params = array($motivazione, $id);
@@ -427,6 +447,16 @@ function remove_teacher($id){
     $sql = "CALL unimia.delete_docente($1);";
     $result = pg_prepare($db, 'rimuovi docente', $sql);
     $result = pg_execute($db, 'rimuovi docente', $params);
+    close_pg_connection($db);
+    return $result;
+}
+
+function remove_iscrizione_esame($id_appello, $id_studente){
+    $db = open_pg_connection();
+    $params = array($id_studente, $id_appello);
+    $sql = "CALL unimia.disiscriviti_studente($1, $2);";
+    $result = pg_prepare($db, 'rimuovi iscrizione', $sql);
+    $result = pg_execute($db, 'rimuovi iscrizione', $params);
     close_pg_connection($db);
     return $result;
 }

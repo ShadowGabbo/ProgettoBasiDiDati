@@ -176,7 +176,7 @@ AS $$
         INNER JOIN appelli AS A ON A.insegnamento = I.id
         INNER JOIN corsidilaurea AS C ON C.id = I.corsodilaurea
         INNER JOIN utenti AS U ON U.id = I.docente
-        WHERE S.id = _id_studente AND A.data > NOW();
+        WHERE S.id = _id_studente; --AND A.data > NOW();
     END;
 $$;
 
@@ -203,5 +203,42 @@ AS $$
         INNER JOIN appelli AS A ON A.id = E.appello
         INNER JOIN insegnamenti AS I ON I.id = A.insegnamento
         WHERE E.studente = _id_studente;
+    END;
+$$;
+
+-- restituisce tutti gli esami da valutare per un docente
+CREATE OR REPLACE FUNCTION get_esami_valutare_docente(
+    _docente uuid
+)RETURNS TABLE (
+    _appello uuid,
+    _nome_insegnamento TEXT,
+    _data DATE,
+    _studente uuid,
+    _matricola CHAR(6),
+    _nome TEXT
+)
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+    BEGIN    
+        SET search_path TO unimia;
+
+        -- trovo tutti gli esami che il docente possa valutare
+        RETURN QUERY
+        SELECT A.id, I.nome, A.data, U.id, S.matricola, CONCAT(U.nome, ' ', U.cognome) 
+        FROM iscrizioniesami AS ISC 
+        INNER JOIN utenti AS U ON U.id = ISC.studente
+        INNER JOIN studenti AS S ON S.id = U.id
+        INNER JOIN appelli AS A ON A.id = ISC.appello
+        INNER JOIN insegnamenti AS I ON I.id = A.insegnamento
+        WHERE I.docente = _docente AND NOW() > A.data -- l'appello deve essere nel "passato"
+        EXCEPT -- tolgo da valutare esami gia' valutati
+        SELECT A2.id, I2.nome, A2.data, U2.id, S2.matricola, CONCAT(U2.nome, ' ', U2.cognome) 
+        FROM esitiesami AS E
+        INNER JOIN utenti AS U2 ON U2.id = E.studente
+        INNER JOIN studenti AS S2 ON S2.id = U2.id
+        INNER JOIN appelli AS A2 ON A2.id = E.appello
+        INNER JOIN insegnamenti AS I2 ON I2.id = A2.insegnamento
+        WHERE I2.docente = _docente;
     END;
 $$;

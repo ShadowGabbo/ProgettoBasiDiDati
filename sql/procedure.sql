@@ -172,6 +172,47 @@ AS $$
     END;
 $$;
 
+-- aggiunge l'iscrizione dello studente per un appello
+CREATE OR REPLACE PROCEDURE add_valutazione_esame (
+  _id_appello uuid,
+  _id_studente uuid,
+  _voto smallint
+)
+LANGUAGE plpgsql
+AS $$
+    DECLARE _data_appello DATE;
+    BEGIN
+        SET search_path TO unimia;
+
+        -- prendo la data dell appello
+        SELECT A.data INTO _data_appello FROM appelli WHERE A.id = _id_appello; 
+
+        -- controllo se lo posso valutare
+        IF _data_appello > Now() THEN
+            raise exception E'Errore appello da valutare nel futuro';
+        END IF;
+
+        -- metto la valutazione
+        INSERT INTO esitiesami(studente, appello, voto) VALUES (_id_studente, _id_appello, voto);
+    END;
+$$;
+
+-- disiscrive uno studente ad un appello
+CREATE OR REPLACE PROCEDURE disiscriviti_studente(
+    _id_studente uuid,
+    _id_appello uuid
+)
+LANGUAGE plpgsql
+AS $$
+    BEGIN
+
+    SET search_path TO unimia;
+
+    DELETE FROM iscrizioniesami AS I WHERE I.appello = _id_appello AND I.studente = _id_studente;
+
+    END;
+$$;
+
 -- elimina uno studente dato il suo id (spostandolo nell'archivio grazie al trigger)
 -- manca trigger e tabella
 CREATE OR REPLACE PROCEDURE remove_student (

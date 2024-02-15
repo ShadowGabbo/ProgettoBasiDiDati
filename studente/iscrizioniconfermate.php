@@ -23,31 +23,21 @@
   <div class="container-fluid">
     <?php include_once("navbar.php"); ?>
     <?php
-        /*
-        if (isset($_SESSION['iscriviti'])){
-            if ($_SESSION['iscriviti'] == false){
+        if (isset($_SESSION['remove_iscrizione'])){
+            if ($_SESSION['remove_iscrizione'] == false){
                 ?>
                     <div class="alert alert-danger" role="alert">
-                        Errore nell'iscrizione
+                        Errore durante la disiscrizione
                     </div>
                 <?php
             }else{
                 ?>
                     <div class="alert alert-success" role="alert">
-                        Iscrizione all'esame avvenuta con successo
+                        Disiscrizione all'esame avvenuta con successo
                     </div>
                 <?php
             }
         }
-        */
-
-        /*
-        <?php if (check_iscrizione($appello[0], $_SESSION['id'])){ ?>
-            <td><button type="submit" class="btn btn-success disabled">Gia iscritto</button></td>
-        <?php }else{?>
-            
-        <?php }?>
-        */
     ?>
 
     <?php if (isset($iscrizioni)){ ?>

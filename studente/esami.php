@@ -24,7 +24,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card-body">
-                <a href="esiti.php"><h2 class="card-text">Esiti esami</h2></a>
+                <a href="esitiesami.php"><h2 class="card-text">Esiti esami</h2></a>
                 <p>Gli esiti di tutti gli esami sostenuti</p>
             </div>
         </div>

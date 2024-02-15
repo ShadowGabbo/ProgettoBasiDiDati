@@ -61,11 +61,11 @@ CREATE TABLE iscrizioniEsami (
 )
 
 CREATE TABLE esitiEsami (
-    studente uuid NOT NULL REFERENCES studenti(id) ON UPDATE CASCADE ON DELETE CASCADE
-    appello uuid NOT NULL REFERENCES appello(id) ON UPDATE CASCADE
+    studente uuid NOT NULL REFERENCES studenti(id) ON UPDATE CASCADE,
+    appello uuid NOT NULL REFERENCES appelli(id) ON UPDATE CASCADE,
     voto INTEGER CHECK (voto BETWEEN 0 AND 31),
     PRIMARY KEY (appello, studente)
-) 
+);
 
 CREATE TABLE propedeuticita (
     insegnamento char(6) NOT NULL REFERENCES insegnamenti(id) ON UPDATE CASCADE,
