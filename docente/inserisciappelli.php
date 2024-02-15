@@ -26,13 +26,13 @@
             if ($_SESSION['insert_appello'] == false){
                 ?>
                     <div class="alert alert-danger" role="alert">
-                        Non e' stato inserito l'appelllo, informazioni errate, riprovare
+                        <?php echo $_SESSION['messaggio'] ?>
                     </div>
                 <?php
             }else{
                 ?>
                     <div class="alert alert-success" role="alert">
-                        Inserito correttamente l'appello nel db
+                        <?php echo $_SESSION['messaggio'] ?>
                     </div>
                 <?php
             }
@@ -47,7 +47,7 @@
     </div>
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Data</label>
-        <input placeholder="Deve essere del formato <yyyy-mm-dd>" type="password" class="form-control" id="exampleInputPassword1" name="data">
+        <input placeholder="Deve essere del formato <yyyy-mm-dd>" type="text" class="form-control" id="exampleInputPassword1" name="data">
     </div>
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Orario</label>
@@ -55,7 +55,7 @@
     </div>
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Luogo</label>
-        <input placeholder="Specificare via e civico almeno"type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="cognome">
+        <input placeholder="Specificare via e civico almeno"type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="luogo">
     </div>
     <button type="submit" class="btn btn-primary">Inserisci appello</button>
     </form>
