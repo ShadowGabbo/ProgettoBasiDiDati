@@ -172,7 +172,7 @@ AS $$
     END;
 $$;
 
--- aggiunge l'iscrizione dello studente per un appello
+-- da il voto allo studente per un certo esame/appello
 CREATE OR REPLACE PROCEDURE add_valutazione_esame (
   _id_appello uuid,
   _id_studente uuid,
@@ -185,7 +185,7 @@ AS $$
         SET search_path TO unimia;
 
         -- prendo la data dell appello
-        SELECT A.data INTO _data_appello FROM appelli WHERE A.id = _id_appello; 
+        SELECT A.data INTO _data_appello FROM appelli AS A WHERE A.id = _id_appello; 
 
         -- controllo se lo posso valutare
         IF _data_appello > Now() THEN
@@ -193,7 +193,7 @@ AS $$
         END IF;
 
         -- metto la valutazione
-        INSERT INTO esitiesami(studente, appello, voto) VALUES (_id_studente, _id_appello, voto);
+        INSERT INTO esitiesami(studente, appello, voto) VALUES (_id_studente, _id_appello, _voto);
     END;
 $$;
 

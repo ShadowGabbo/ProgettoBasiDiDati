@@ -356,6 +356,16 @@ function insert_appello($id, $data, $orario, $luogo){
     return $result;
 }
 
+function insert_voto($id_appello, $id_studente, $voto){
+    $db = open_pg_connection();
+    $params = array($id_appello, $id_studente, $voto);
+    $sql = "CALL unimia.add_valutazione_esame($1, $2, $3);";
+    $result = pg_prepare($db, 'inserisci voto', $sql);
+    $result = pg_execute($db, 'inserisci voto', $params);
+    close_pg_connection($db);
+    return $result;
+}
+
 function is_docente_responsabile($id_docente, $id_insegnamento){
     $db = open_pg_connection();
     $params = array($id_docente, $id_insegnamento);

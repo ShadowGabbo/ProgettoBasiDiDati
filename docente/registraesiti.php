@@ -22,6 +22,23 @@
   <body>
   <div class="container-fluid">
     <?php include_once("navbar.php"); ?>
+    <?php
+        if (isset($_SESSION['insert_voto'])){
+            if ($_SESSION['insert_voto'] == false){
+                ?>
+                    <div class="alert alert-danger" role="alert">
+                        Errore, voto non inserito
+                    </div>
+                <?php
+            }else{
+                ?>
+                    <div class="alert alert-success" role="alert">
+                        Voto inserito correttamente
+                    </div>
+                <?php
+            }
+        }
+    ?>
     <?php if (isset($esami)){ ?>
         <h2>Inserisci i voti degli esami</h2>
         <table class="table table-dark table-striped">
@@ -32,6 +49,7 @@
             <th scope="col">Data</th>
             <th scope="col">Matricola studente</th>
             <th scope="col">Nome e cognome studente</th>
+            <th scope="col">Inserisci voto</th>
         </tr>
     </thead>
     <tbody>
@@ -42,6 +60,14 @@
                 <td><?php print($esame[2]) ?></td>
                 <td><?php print($esame[4]) ?></td>
                 <td><?php print($esame[5]) ?></td>
+                <td>
+                    <form action='../lib/registravoto.php' method='POST'>
+                        <input type='hidden' name="id_appello" value='<?php echo $esame[0];?>'>
+                        <input type='hidden' name="id_studente" value='<?php echo $esame[3];?>'>
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name='voto'>
+                        <button type="submit" class="btn btn-success">Inserisci voto</button>
+                    </form>
+                </td>
             </tr>
         <?php } ?>
     </table>
