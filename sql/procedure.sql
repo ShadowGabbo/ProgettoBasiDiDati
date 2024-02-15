@@ -148,7 +148,30 @@ AS $$
         SET search_path TO unimia;
 
         IF Now() > _data THEN
-        raise exception E'Appello nel passato non possibile';
+            raise exception E'Appello nel passato non possibile';
+        END IF;
+
+        INSERT INTO appelli(insegnamento, data, orario, luogo)
+        VALUES (_insegnamento, _data, _ora, _luogo);
+
+    END;
+$$;
+
+-- aggiunge l'iscrizione dello studente per un appello
+CREATE OR REPLACE PROCEDURE add_iscrizione_studente (
+  _insegnamento VARCHAR(6),
+  _data DATE,
+  _ora TIME,
+  _luogo TEXT
+)
+LANGUAGE plpgsql
+AS $$
+    BEGIN
+
+        SET search_path TO unimia;
+
+        IF Now() > _data THEN
+            raise exception E'Appello nel passato non possibile';
         END IF;
 
         INSERT INTO appelli(insegnamento, data, orario, luogo)

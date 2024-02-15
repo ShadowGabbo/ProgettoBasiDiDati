@@ -146,3 +146,36 @@ AS $$
         INNER JOIN appelli AS A ON A.insegnamento = I.id;
     END;
 $$;
+
+/*
+ * Restituisce tutti gli appelli per uno studente
+ * (Gli appelli del proprio corso di studio del futuro)
+ */
+CREATE OR REPLACE FUNCTION get_all_appelli(
+    _id_studente uuid
+) RETURNS TABLE (
+    _id_appello uuid,
+    _nome_insegnamento text,
+    _nome_corso text,
+    _nome_docente text,
+    _data DATE,
+    _orario TIME, 
+    _luogo text
+)
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+    BEGIN    
+        SET search_path TO unimia;
+
+        -- trovo tutti gli appelli degli insegnamenti del "mio" corso di studio 
+        RETURN QUERY
+        SELECT  A.id, I.nome , C.nome, CONCAT(U.nome, ' ', U.cognome) ,A.data, A.orario, A.luogo
+        FROM studenti AS S
+        INNER JOIN insegnamenti AS I ON I.corsodilaurea = S.corsodilaurea
+        INNER JOIN appelli AS A ON A.insegnamento = I.id
+        INNER JOIN corsidilaurea AS C ON C.id = I.corsodilaurea
+        INNER JOIN utenti AS U ON U.id = I.docente
+        WHERE S.id = _id_studente AND A.data > NOW();
+    END;
+$$;

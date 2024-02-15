@@ -256,6 +256,28 @@ function get_all_insegnamenti($id){
     return $insegnamenti;
 }
 
+function get_appelli_studente($id){
+    $db = open_pg_connection();
+    $sql = "SELECT * FROM unimia.get_all_appelli($1);";
+    $result = pg_prepare($db, 'appelli studente', $sql);
+    $result = pg_execute($db, 'appelli studente', array($id));
+    close_pg_connection($db);
+
+    $appelli = array();
+    while($row = pg_fetch_assoc($result)){
+        $id = $row['_id_appello'];
+        $nome_insegnamento = $row['_nome_insegnamento'];
+        $nome_corso = $row['_nome_corso'];
+        $nome_docente = $row['_nome_docente'];
+        $data = $row['_data'];
+        $orario = $row['_orario'];
+        $luogo = $row['_luogo'];
+        $appello = array($id, $nome_insegnamento, $nome_corso, $nome_docente, $data, $orario, $luogo);
+        array_push($appelli, $appello);
+    }
+    return $appelli;
+}
+
 function insert_student($email, $password, $nome, $cognome, $cdl){
     $db = open_pg_connection();
     $params = array($email, $password, $nome, $cognome, $cdl);
@@ -345,6 +367,16 @@ function is_docente_responsabile($id_docente, $id_insegnamento){
     $result = pg_execute($db, 'controlla docente insegnamento', $params);
     close_pg_connection($db);
     return pg_fetch_assoc($result);
+}
+
+function studente_iscriviti_appello($appello, $studente){
+    $db = open_pg_connection();
+    $params = array($appello, $studente);
+    $sql = "CALL unimia.add_appello($1, $2);";
+    $result = pg_prepare($db, 'studente iscrizione', $sql);
+    $result = pg_execute($db, 'studente iscrizione', $params);
+    close_pg_connection($db);
+    return $result;
 }
 
 function remove_student($id, $motivazione){

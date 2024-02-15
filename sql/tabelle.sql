@@ -55,8 +55,8 @@ CREATE TABLE appelli (
 )
 
 CREATE TABLE iscrizioniEsami (
-    studente uuid NOT NULL REFERENCES studenti(id) ON UPDATE CASCADE ON DELETE CASCADE
-    appello uuid NOT NULL REFERENCES appello(id) ON UPDATE CASCADE ON DELETE CASCADE
+    studente uuid NOT NULL REFERENCES studenti(id) ON UPDATE CASCADE,
+    appello uuid NOT NULL REFERENCES appelli(id) ON UPDATE CASCADE,
     PRIMARY KEY (appello, studente)
 )
 

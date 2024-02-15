@@ -27,6 +27,9 @@
                 </ul>
             </li>
             <li class="nav-item">
+            <a class="nav-link" href="registraesiti.php">Registra esiti</a>
+          </li>
+            <li class="nav-item">
             <a class="nav-link" href="#">Esci</a>
             </li>
         </ul>

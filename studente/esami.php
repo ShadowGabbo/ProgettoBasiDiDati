@@ -40,7 +40,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card-body">
-                <a href="nuoveiscrizioni.php"><h2 class="card-text">Iscrizioni per un nuovo esame</h2></a>
+                <a href="iscrivitiappelli.php"><h2 class="card-text">Iscrizioni per un nuovo esame</h2></a>
                 <p>Iscriviti ad un nuovo esami del tuo corso di studi</p>
             </div>
         </div>
