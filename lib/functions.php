@@ -430,6 +430,30 @@ function get_esiti_studente($id){
     }
     return $esiti;
 }
+/**
+ * Resituisce gli esami che il docente puo' valutare
+ */
+function get_esami_valutare_docente($id){
+    $db = open_pg_connection();
+    $params = array($id);
+    $sql = "SELECT * FROM unimia.get_esami_valutare_docente($1);";
+    $result = pg_prepare($db, 'valuta studente', $sql);
+    $result = pg_execute($db, 'valuta studente', $params);
+    close_pg_connection($db);
+    
+    $esami = array();
+    while($row = pg_fetch_assoc($result)){
+        $id_appello = $row['_appello'];
+        $nome_insegnamento = $row['_nome_insegnamento'];
+        $data = $row['_data'];
+        $id_studente = $row['_studente'];
+        $matricola = $row['_matricola'];
+        $nome = $row['_nome'];
+        $esame = array($id_appello, $nome_insegnamento, $data, $id_studente, $matricola, $nome);
+        array_push($esami, $esame);
+    }
+    return $esami;
+}
 
 function remove_student($id, $motivazione){
     $db = open_pg_connection();
