@@ -22,6 +22,24 @@
   <body>
   <div class="container-fluid">
     <?php include_once("navbar.php"); ?>
+    <?php
+        if (isset($_SESSION['iscriviti'])){
+            if ($_SESSION['iscriviti'] == false){
+                ?>
+                    <div class="alert alert-danger" role="alert">
+                        Errore nell'iscrizione
+                    </div>
+                <?php
+            }else{
+                ?>
+                    <div class="alert alert-success" role="alert">
+                        Iscrizione all'esame avvenuta con successo
+                    </div>
+                <?php
+            }
+        }
+    ?>
+
     <?php if (isset($appelli)){ ?>
         <h3>Gli appelli disponibili soddisfano i seguenti requisiti:</h3>
         <ul>
@@ -55,10 +73,14 @@
                 <td><?php print($appello[4]) ?></td>
                 <td><?php print($appello[5]) ?></td>
                 <td><?php print($appello[6]) ?></td>
-                <form action='../lib/iscrivitiappello.php' method='get'>
-                    <input type='hidden' name="id" value='<?php echo $appello[0]; ?>'>
-                    <td><button type="submit" class="btn btn-success">Iscriviti</button></td>
-                </form>
+                <?php if (check_iscrizione($appello[0], $_SESSION['id'])){ ?>
+                    <td><button type="submit" class="btn btn-success disabled">Gia iscritto</button></td>
+                <?php }else{?>
+                    <form action='../lib/iscrivitiappello.php' method='get'>
+                        <input type='hidden' name="id" value='<?php echo $appello[0]; ?>'>
+                        <td><button type="submit" class="btn btn-success">Iscriviti</button></td>
+                    </form>
+                <?php }?>
             </tr>
         <?php } ?>
     </table>

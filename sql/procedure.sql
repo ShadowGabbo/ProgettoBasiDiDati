@@ -159,24 +159,16 @@ $$;
 
 -- aggiunge l'iscrizione dello studente per un appello
 CREATE OR REPLACE PROCEDURE add_iscrizione_studente (
-  _insegnamento VARCHAR(6),
-  _data DATE,
-  _ora TIME,
-  _luogo TEXT
+  _id_appello uuid,
+  _id_studente uuid
 )
 LANGUAGE plpgsql
 AS $$
     BEGIN
-
         SET search_path TO unimia;
 
-        IF Now() > _data THEN
-            raise exception E'Appello nel passato non possibile';
-        END IF;
-
-        INSERT INTO appelli(insegnamento, data, orario, luogo)
-        VALUES (_insegnamento, _data, _ora, _luogo);
-
+        -- aggiungo l'iscrizione dell appello per lo studente
+        INSERT INTO iscrizioniesami(studente, appello) VALUES (_id_studente, _id_appello);
     END;
 $$;
 

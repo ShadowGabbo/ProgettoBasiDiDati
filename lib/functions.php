@@ -372,11 +372,21 @@ function is_docente_responsabile($id_docente, $id_insegnamento){
 function studente_iscriviti_appello($appello, $studente){
     $db = open_pg_connection();
     $params = array($appello, $studente);
-    $sql = "CALL unimia.add_appello($1, $2);";
+    $sql = "CALL unimia.add_iscrizione_studente($1, $2);";
     $result = pg_prepare($db, 'studente iscrizione', $sql);
     $result = pg_execute($db, 'studente iscrizione', $params);
     close_pg_connection($db);
     return $result;
+}
+
+function check_iscrizione($id_appello, $id_studente){
+    $db = open_pg_connection();
+    $params = array($id_studente, $id_appello);
+    $sql = "SELECT * FROM unimia.iscrizioniesami AS I where I.studente = $1 AND I.appello = $2;";
+    $result = pg_prepare($db, 'studente iscrizione', $sql);
+    $result = pg_execute($db, 'studente iscrizione', $params);
+    close_pg_connection($db);
+    return pg_fetch_assoc($result);
 }
 
 function remove_student($id, $motivazione){
