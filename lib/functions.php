@@ -389,6 +389,28 @@ function check_iscrizione($id_appello, $id_studente){
     return pg_fetch_assoc($result);
 }
 
+function get_iscrizioni_studente($id_studente){
+    $db = open_pg_connection();
+    $params = array($id_studente);
+    $sql = "SELECT * FROM unimia.get_all_iscrizioni($1);";
+    $result = pg_prepare($db, 'studente iscrizioni', $sql);
+    $result = pg_execute($db, 'studente iscrizioni', $params);
+    close_pg_connection($db);
+    
+    $iscrizioni = array();
+    while($row = pg_fetch_assoc($result)){
+        $id = $row['_id_appello'];
+        $nome_insegnamento = $row['_nome_insegnamento'];
+        $data = $row['_data'];
+        $orario = $row['_orario'];
+        $luogo = $row['_luogo'];
+        $iscrizione = array($id, $nome_insegnamento, $data, $orario, $luogo);
+        array_push($iscrizioni, $iscrizione);
+    }
+    return $iscrizioni;
+
+}
+
 function remove_student($id, $motivazione){
     $db = open_pg_connection();
     $params = array($motivazione, $id);

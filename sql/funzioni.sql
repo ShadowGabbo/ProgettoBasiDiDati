@@ -179,3 +179,29 @@ AS $$
         WHERE S.id = _id_studente AND A.data > NOW();
     END;
 $$;
+
+-- restituisce tutte le iscrizioni agli esami di uno studente (ossia gli appelli)
+CREATE OR REPLACE FUNCTION get_all_iscrizioni(
+    _id_studente uuid
+) RETURNS TABLE (
+    _id_appello uuid,
+    _nome_insegnamento text,
+    _data DATE,
+    _orario TIME, 
+    _luogo text
+)
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+    BEGIN    
+        SET search_path TO unimia;
+
+        -- trovo tutte le iscrizioni confermate ai miei esami
+        RETURN QUERY
+        SELECT A.id, I.nome, A.data, A.orario, A.luogo
+        FROM iscrizioniesami AS E
+        INNER JOIN appelli AS A ON A.id = E.appello
+        INNER JOIN insegnamenti AS I ON I.id = A.insegnamento
+        WHERE E.studente = _id_studente;
+    END;
+$$;
