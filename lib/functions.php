@@ -438,6 +438,7 @@ function get_esiti_studente($id){
         array_push($esiti, $esito);
     }
     return $esiti;
+    
 }
 /**
  * Resituisce gli esami che il docente puo' valutare
