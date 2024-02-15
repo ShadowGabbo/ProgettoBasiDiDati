@@ -424,18 +424,17 @@ function get_iscrizioni_studente($id_studente){
 function get_esiti_studente($id){
     $db = open_pg_connection();
     $params = array($id);
-    $sql = "SELECT * FROM unimia.get_esiti_studente($1);";
+    $sql = "SELECT * FROM unimia.get_voti_studente($1);";
     $result = pg_prepare($db, 'studente esiti', $sql);
     $result = pg_execute($db, 'studente esiti', $params);
     close_pg_connection($db);
     
     $esiti = array();
     while($row = pg_fetch_assoc($result)){
-        $id = $row['_id_appello'];
         $nome_insegnamento = $row['_nome_insegnamento'];
         $data = $row['_data'];
         $voto = $row['_voto'];
-        $esito = array($id, $nome_insegnamento, $data, $voto);
+        $esito = array($nome_insegnamento, $data, $voto);
         array_push($esiti, $esito);
     }
     return $esiti;

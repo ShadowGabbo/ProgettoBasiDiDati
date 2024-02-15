@@ -242,3 +242,26 @@ AS $$
         WHERE I2.docente = _docente;
     END;
 $$;
+
+-- restituisce tutti gli esami da valutare per un docente
+CREATE OR REPLACE FUNCTION get_voti_studente(
+    _studente uuid
+)RETURNS TABLE (
+    _nome_insegnamento text,
+    _data DATE,
+    _voto integer
+)
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+    BEGIN    
+        SET search_path TO unimia;
+
+        RETURN QUERY
+        SELECT I.nome, A.data, E.voto
+        FROM esitiEsami AS E
+        INNER JOIN appelli AS A ON A.id = E.appello
+        INNER JOIN insegnamenti AS I ON I.id = A.insegnamento
+        WHERE E.studente = _studente;
+    END;
+$$;
