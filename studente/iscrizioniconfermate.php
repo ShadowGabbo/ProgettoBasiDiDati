@@ -64,10 +64,15 @@
                 <td><?php print($iscrizione[2]) ?></td>
                 <td><?php print($iscrizione[3]) ?></td>
                 <td><?php print($iscrizione[4]) ?></td>
-                <form action='../lib/disiscrivitiappello.php' method='get'>
+
+                <?php if (!check_disiscrizione($iscrizione[0], $_SESSION['id'])){ ?>
+                    <td><button type="submit" class="btn btn-success disabled">Gia sostenuto</button></td>
+                <?php }else{?>
+                    <form action='../lib/disiscrivitiappello.php' method='get'>
                     <input type='hidden' name="id" value='<?php echo $iscrizione[0]; ?>'>
                     <td><button type="submit" class="btn btn-danger">Disiscriviti</button></td>
                 </form>
+                <?php }?>
             </tr>
         <?php } ?>
     </table>

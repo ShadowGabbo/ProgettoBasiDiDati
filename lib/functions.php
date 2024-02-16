@@ -399,6 +399,19 @@ function check_iscrizione($id_appello, $id_studente){
     return pg_fetch_assoc($result);
 }
 
+function check_disiscrizione($id_appello, $id_studente){
+    $db = open_pg_connection();
+    $params = array($id_studente, $id_appello);
+    $sql = "SELECT * FROM unimia.iscrizioniesami AS I 
+            INNER JOIN unimia.appelli AS A ON A.id = I.appello
+            WHERE I.studente = $1 AND I.appello = $2
+            AND NOW() < A.data;";
+    $result = pg_prepare($db, 'studente disiscrizione', $sql);
+    $result = pg_execute($db, 'studente disiscrizione', $params);
+    close_pg_connection($db);
+    return pg_fetch_assoc($result);
+}
+
 function get_iscrizioni_studente($id_studente){
     $db = open_pg_connection();
     $params = array($id_studente);
