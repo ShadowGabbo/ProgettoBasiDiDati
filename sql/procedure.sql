@@ -189,7 +189,7 @@ AS $$
 
         -- controllo se lo posso valutare
         IF _data_appello > Now() THEN
-            raise exception E'Errore appello da valutare nel futuro';
+            raise exception E'Errore appello da valutare deve essere passato';
         END IF;
 
         -- metto la valutazione

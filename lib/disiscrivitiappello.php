@@ -14,7 +14,7 @@
                 redirect('../studente/iscrizioniconfermate.php');
             }else{
                 $_SESSION['remove_iscrizione'] = false;
-                $error = parseError(pg_last_error());
+                //$error = parseError(pg_last_error());
                 redirect('../studente/iscrizioniconfermate.php');
                 }
         }else{

@@ -136,6 +136,47 @@ CREATE OR REPLACE TRIGGER i_u_check_propedeuticita
     FOR EACH ROW
     EXECUTE PROCEDURE check_propedeuticita();
 
+
+
+CREATE OR REPLACE FUNCTION correttazza_calendario_appelli() RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+        _anno TIPO_ANNO;
+        _cdl varchar(6);
+        _counter integer;
+    BEGIN
+        SET search_path TO unimia;
+
+        -- prendo anno e cdl dell'insegnamento relativo all'appello
+        SELECT I.anno, I.corsodilaurea INTO _anno, _cdl
+        FROM insegnamenti AS I 
+        WHERE I.id = NEW.insegnamento;
+
+        -- conto quanti appelli ci sono nella stessa giornata
+        -- di insegnamenti dello stesso cdl dello stesso anno
+        SELECT COUNT(*) INTO _counter
+        FROM appelli AS A
+        INNER JOIN insegnamenti AS I ON A.insegnamento = I.id
+        WHERE I.corsodilaurea = _cdl AND I.anno = _anno AND A.data = NEW.data AND A.id != NEW.id;
+
+        IF _counter >= 1 THEN
+            RAISE EXCEPTION 'Appelli gia presenti in questa giornata';
+        END IF;
+
+      RETURN NEW;
+    END;
+$$;
+
+-- (CORRETTEZZA DEL CALENDARIO DI ESAME)
+-- trigger che controlla che nella stessa giornata non ci siano
+-- appelli per più esami dello stesso anno di un corso di laurea.
+CREATE OR REPLACE TRIGGER i_u_correttazza_calendario_appelli
+    BEFORE INSERT OR UPDATE ON appelli
+    FOR EACH ROW
+    EXECUTE PROCEDURE correttazza_calendario_appelli();
+
+
 -- TO-DO
 -- DA FARE LA FUNZIONE 
 CREATE OR REPLACE TRIGGER d_archivia_studente

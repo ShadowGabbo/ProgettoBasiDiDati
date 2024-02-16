@@ -20,6 +20,7 @@
                 }else{
                     $_SESSION['insert_appello'] = false;
                     $_SESSION['messaggio'] = 'Errore nel salvataggio del appello';
+                    //$error = parseError(pg_last_error());
                     redirect('../docente/inserisciappelli.php');
                 }
             }else{
