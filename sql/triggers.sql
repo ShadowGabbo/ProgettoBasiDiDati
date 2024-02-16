@@ -202,6 +202,8 @@ AS $$
     END;
 $$;
 
+-- Controlla se uno studente si puo' disiscrivere da un appello (iscrizione) 
+-- solo quando la data dell'appello non e' gia passata
 CREATE OR REPLACE TRIGGER d_disicrizione_appello_studente
     BEFORE DELETE ON iscrizioniesami 
     FOR EACH ROW 
@@ -239,7 +241,7 @@ AS $$
         END IF;
 
         -- controllo se le propedeuticita' sono rispettate per potersi iscrivere
-        -- prendo gli insegnamenti propedeutici e conto quelli che non hanno una valutazione
+        -- prendo gli insegnamenti propedeutici e conto quelli che non hanno una valutazione positiva
         -- se almeno un record non ha una valutazione allora non mi posso iscrivere
         WITH RECURSIVE propedeutici AS (
             SELECT P.insegnamentopropedeutico
@@ -256,6 +258,7 @@ AS $$
             SELECT *
             FROM get_voti_studente(NEW.studente) AS V
             WHERE V._id_insegnamento = P.insegnamentopropedeutico
+            AND V._voto >= 18
         );
 
         IF _counter > 0 THEN
@@ -266,6 +269,9 @@ AS $$
     END;
 $$;
 
+-- (Correttezza delle iscrizioni agli esami)
+-- ci si puo' iscrivere solo se e' un appello riferito ad un insegnamento del proprio corso di studio
+-- e se tutte le propedeuticita' sono rispettate
 CREATE OR REPLACE TRIGGER i_controllo_iscrizione
     BEFORE INSERT 
     ON iscrizioniesami
