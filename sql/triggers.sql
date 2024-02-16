@@ -177,6 +177,36 @@ CREATE OR REPLACE TRIGGER i_u_correttazza_calendario_appelli
     EXECUTE PROCEDURE correttazza_calendario_appelli();
 
 
+CREATE OR REPLACE FUNCTION disicrizione_appello_studente() RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+        _data_appello DATE;
+    BEGIN
+        SET search_path TO unimia;
+
+        -- controllo che il giorno dell'esame non sia passato
+        -- ovviamente non e' possibile disiscriversi ad un esame se lo si sta sostenendo 
+        -- oppure se e' gia passato 
+        SELECT A.data INTO _data_appello
+        FROM iscrizioniesami AS I 
+        INNER JOIN appelli AS A ON A.id = I.appello
+        WHERE I.studente = OLD.studente AND I.appello = OLD.appello;
+
+        -- controllo che il giorno dell'esame sia in "futuro"
+        IF NOW() >= _data_appello THEN
+            RAISE EXCEPTION 'Non si puo disiscriversi da un esame passato';
+        END IF;
+
+        RETURN OLD;
+    END;
+$$;
+
+CREATE OR REPLACE TRIGGER d_disicrizione_appello_studente
+    BEFORE DELETE ON iscrizioniesami 
+    FOR EACH ROW 
+    EXECUTE PROCEDURE disicrizione_appello_studente();
+
 -- TO-DO
 -- DA FARE LA FUNZIONE 
 CREATE OR REPLACE TRIGGER d_archivia_studente
