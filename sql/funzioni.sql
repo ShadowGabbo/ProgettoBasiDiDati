@@ -243,10 +243,11 @@ AS $$
     END;
 $$;
 
--- restituisce tutti gli esami da valutare per un docente
+-- restituisce tutte le valutazioni per uno studente
 CREATE OR REPLACE FUNCTION get_voti_studente(
     _studente uuid
 )RETURNS TABLE (
+    _id_insegnamento varchar(6),
     _nome_insegnamento text,
     _data DATE,
     _voto integer
@@ -258,7 +259,7 @@ AS $$
         SET search_path TO unimia;
 
         RETURN QUERY
-        SELECT I.nome, A.data, E.voto
+        SELECT I.id, I.nome, A.data, E.voto
         FROM esitiEsami AS E
         INNER JOIN appelli AS A ON A.id = E.appello
         INNER JOIN insegnamenti AS I ON I.id = A.insegnamento

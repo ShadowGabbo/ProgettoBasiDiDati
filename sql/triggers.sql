@@ -207,6 +207,71 @@ CREATE OR REPLACE TRIGGER d_disicrizione_appello_studente
     FOR EACH ROW 
     EXECUTE PROCEDURE disicrizione_appello_studente();
 
+
+
+CREATE OR REPLACE FUNCTION controllo_iscrizione() RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+        _insegnamento_appello varchar(6);
+        _cdl_appello varchar(6);
+        _cdl_studente varchar(6);
+        _counter integer;
+    BEGIN
+        SET search_path TO unimia;
+
+        -- prendo il corso di laurea e l'insegnamento dell'appello
+        SELECT I.id, I.corsodilaurea INTO _insegnamento_appello, _cdl_appello
+        FROM appelli AS A
+        INNER JOIN insegnamenti AS I ON I.id = A.insegnamento
+        WHERE A.id = NEW.appello;
+
+        -- prendo il corso di laurea dello studente che si vuole iscrivere
+        SELECT S.corsodilaurea INTO _cdl_studente
+        FROM studenti AS S 
+        WHERE S.id = NEW.studente;
+
+        -- controllo che il corso di laurea dello studente coincida con 
+        -- il corso di laurea dell'insegnamento dell'appello 
+        -- (perche' non e' possibile iscriversi ad esami di altri corsi di studio)
+        IF _cdl_appello != _cdl_studente THEN
+            RAISE EXCEPTION 'Iscrizione non possibile per corso di studio sbagliato';
+        END IF;
+
+        -- controllo se le propedeuticita' sono rispettate per potersi iscrivere
+        -- prendo gli insegnamenti propedeutici e conto quelli che non hanno una valutazione
+        -- se almeno un record non ha una valutazione allora non mi posso iscrivere
+        WITH RECURSIVE propedeutici AS (
+            SELECT P.insegnamentopropedeutico
+            FROM propedeuticita AS P
+            WHERE insegnamento = _insegnamento_appello
+            UNION 
+            SELECT P2.insegnamentopropedeutico
+            FROM propedeutici AS P
+            INNER JOIN propedeuticita AS P2 ON P2.insegnamentopropedeutico = P2.insegnamento
+        )
+        SELECT COUNT(*) INTO _counter
+        FROM propedeutici AS P 
+        WHERE NOT EXISTS (
+            SELECT *
+            FROM get_voti_studente(NEW.studente) AS V
+            WHERE V._id_insegnamento = P.insegnamentopropedeutico
+        );
+
+        IF _counter > 0 THEN
+            raise exception 'Non sono state rispettate le propedeuticità';
+        END IF;
+
+        RETURN NEW;
+    END;
+$$;
+
+CREATE OR REPLACE TRIGGER i_controllo_iscrizione
+    BEFORE INSERT 
+    ON iscrizioniesami
+    FOR EACH ROW
+    EXECUTE PROCEDURE controllo_iscrizione();
+
 -- TO-DO
 -- DA FARE LA FUNZIONE 
 CREATE OR REPLACE TRIGGER d_archivia_studente
