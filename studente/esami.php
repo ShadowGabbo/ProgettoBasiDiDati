@@ -24,8 +24,16 @@
     <div class="row">
         <div class="col-12">
             <div class="card-body">
-                <a href="esitiesami.php"><h2 class="card-text">Esiti esami</h2></a>
+                <a href="esitiesami.php"><h2 class="card-text">Carriera completa studente</h2></a>
                 <p>Gli esiti di tutti gli esami sostenuti</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card-body">
+                <a href="carrieravalida.php"><h2 class="card-text">Carriera valida studente</h2></a>
+                <p>Gli esiti di tutti gli esami recenti superati </p>
             </div>
         </div>
     </div>

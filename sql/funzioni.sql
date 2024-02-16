@@ -243,6 +243,7 @@ AS $$
     END;
 $$;
 
+-- (CARRIERA COMPLETA STUDENTE)
 -- restituisce tutte le valutazioni per uno studente
 CREATE OR REPLACE FUNCTION get_voti_studente(
     _studente uuid
@@ -264,5 +265,38 @@ AS $$
         INNER JOIN appelli AS A ON A.id = E.appello
         INNER JOIN insegnamenti AS I ON I.id = A.insegnamento
         WHERE E.studente = _studente;
+    END;
+$$;
+
+-- restituisce la carrriera valida di uno studente
+-- ossia restituisce tutti i voti degli esami piu recenti superati
+CREATE OR REPLACE FUNCTION get_carriera_valida_studente(
+    _studente uuid
+)RETURNS TABLE (
+    _id_insegnamento varchar(6),
+    _nome_insegnamento text,
+    _data DATE,
+    _voto integer
+)
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+    BEGIN    
+        SET search_path TO unimia;
+
+        RETURN QUERY
+        SELECT I1.id ,I1.nome ,A1.data ,E1.voto
+        FROM esitiesami AS E1
+        INNER JOIN appelli AS A1 ON E1.appello = A1.id
+        INNER JOIN insegnamenti AS I1 ON I1.id = A1.insegnamento
+        WHERE E1.studente = _studente AND (I1.id, A1.data) IN (
+            SELECT I2.id, MAX(A2.data)
+            FROM esitiesami AS E2
+            INNER JOIN appelli AS A2 ON E2.appello = A2.id
+            INNER JOIN insegnamenti AS I2 ON I2.id = A2.insegnamento
+            WHERE E2.studente = _studente
+            GROUP BY I2.id
+        )AND E1.voto >= 18;
+
     END;
 $$;

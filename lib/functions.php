@@ -478,6 +478,25 @@ function get_esami_valutare_docente($id){
     return $esami;
 }
 
+function get_carriera_valida($id_studente){
+    $db = open_pg_connection();
+    $params = array($id_studente);
+    $sql = "SELECT * FROM unimia.get_carriera_valida_studente($1);";
+    $result = pg_prepare($db, 'studente esiti', $sql);
+    $result = pg_execute($db, 'studente esiti', $params);
+    close_pg_connection($db);
+    
+    $esiti = array();
+    while($row = pg_fetch_assoc($result)){
+        $nome_insegnamento = $row['_nome_insegnamento'];
+        $data = $row['_data'];
+        $voto = $row['_voto'];
+        $esito = array($nome_insegnamento, $data, $voto);
+        array_push($esiti, $esito);
+    }
+    return $esiti;
+}
+
 function remove_student($id, $motivazione){
     $db = open_pg_connection();
     $params = array($motivazione, $id);
