@@ -488,10 +488,11 @@ function get_carriera_valida($id_studente){
     
     $esiti = array();
     while($row = pg_fetch_assoc($result)){
+        $id_insegnamento = $row['_id_insegnamento'];
         $nome_insegnamento = $row['_nome_insegnamento'];
         $data = $row['_data'];
         $voto = $row['_voto'];
-        $esito = array($nome_insegnamento, $data, $voto);
+        $esito = array($id_insegnamento, $nome_insegnamento, $data, $voto);
         array_push($esiti, $esito);
     }
     return $esiti;

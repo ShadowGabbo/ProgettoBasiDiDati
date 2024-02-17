@@ -24,12 +24,13 @@
     <?php include_once("navbar.php"); ?>
 
     <?php if (isset($esiti)){ ?>
-        <h3>Di seguito sono mostrati i voti degli esami superati</h3>
+        <h3>Di seguito sono mostrati i voti degli esami superati piu' recenti</h3>
         <br>
-        <h3>Voti esami</h3>
+        <h3>Voti esami (Carriera valida studente)</h3>
         <table class="table table-dark table-striped">
         <thead>
             <tr>
+            <th scope="col">Id insegnamento</th>    
             <th scope="col">Nome insegnamento</th>
             <th scope="col">Data</th>
             <th scope="col">Voto</th>
@@ -41,6 +42,7 @@
                 <td><?php print($esito[0]) ?></td>
                 <td><?php print($esito[1]) ?></td>
                 <td><?php print($esito[2]) ?></td>
+                <td><?php print($esito[3]) ?></td>
             </tr>
         <?php } ?>
     </table>
