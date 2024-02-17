@@ -200,6 +200,7 @@ AS $$
 
         RETURN OLD;
     END;
+    
 $$;
 
 -- Controlla se uno studente si puo' disiscrivere da un appello (iscrizione) 
