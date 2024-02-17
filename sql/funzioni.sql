@@ -93,6 +93,33 @@ AS $$
     END;
 $$;
 
+-- restituisce i nomi di tutti gli insegnammenti propedeutici a quello passato come argomento 
+CREATE OR REPLACE FUNCTION get_all_insegnamenti_propedeutici(
+    _id_insegnamento varchar(6)
+)
+RETURNS TABLE(
+    _propedeutici text
+)LANGUAGE plpgsql
+AS $$
+    BEGIN    
+        SET search_path TO unimia;
+
+        RETURN QUERY
+        WITH RECURSIVE propedeutici AS (
+            SELECT P.insegnamentopropedeutico
+            FROM propedeuticita AS P
+            WHERE insegnamento = _id_insegnamento
+            UNION 
+            SELECT P2.insegnamentopropedeutico
+            FROM propedeutici AS P
+            INNER JOIN propedeuticita AS P2 ON P2.insegnamentopropedeutico = P2.insegnamento
+        )
+        SELECT I.nome
+        FROM propedeutici AS P 
+        INNER JOIN insegnamenti AS I ON I.id = P.insegnamentopropedeutico;
+    END;
+$$;
+
 -- restituisce gli insegnamenti di cui e' responsabile/insegna (max 3)
 CREATE OR REPLACE FUNCTION get_insegnamenti_docente(
     _docente uuid

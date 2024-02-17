@@ -256,6 +256,22 @@ function get_all_insegnamenti($id){
     return $insegnamenti;
 }
 
+function get_all_propedeutici($id_insegnamento){
+    $db = open_pg_connection();
+    $sql = "SELECT * FROM unimia.get_all_insegnamenti_propedeutici($1);";
+    $result = pg_prepare($db, 'ottieni propedeutici', $sql);
+    $result = pg_execute($db, 'ottieni propedeutici', array($id_insegnamento));
+    close_pg_connection($db);
+
+    $insegnamenti = array();
+    while($row = pg_fetch_assoc($result)){
+        $nome_propedeutico = $row['_propedeutici'];
+        $insegnamento = $nome_propedeutico;
+        array_push($insegnamenti, $insegnamento);
+    }
+    return $insegnamenti;
+}
+
 function get_appelli_studente($id){
     $db = open_pg_connection();
     $sql = "SELECT * FROM unimia.get_all_appelli($1);";

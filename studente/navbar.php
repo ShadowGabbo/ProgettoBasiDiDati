@@ -16,6 +16,9 @@
             <a class="nav-link" href="esami.php">Esami</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="corsidilaurea.php">Corsi di laurea</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="#">Esci</a>
           </li>
         </ul>
