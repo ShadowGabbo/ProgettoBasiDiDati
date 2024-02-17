@@ -230,7 +230,7 @@ END;
 $$;
 
 -- archivia uno studente per una motivazione 
--- differenza con il trigger sotto
+-- e' la segreteria a scegliere il motivo dell'archiviazione
 CREATE OR REPLACE PROCEDURE archivia_studente(
     _motivazione TIPO_MOTIVO,
     _id uuid
@@ -245,15 +245,32 @@ AS $$
 
     -- salva i dati dello studente
     SELECT * INTO _studente FROM studenti WHERE id = _id;
-    -- elimina lo studete
-    DELETE FROM studenti WHERE id = _id;
-
-    -- ATTENZIONE MANCA L'ARCHIVIAZIONE DEGLI ESAMI
 
     -- inserisce nell'archivio studenti quello appena eliminato con la motivazione personalizzata
     INSERT INTO storicostudenti
     VALUES (_studente.id, _studente.matricola, _motivazione , _studente.corsodilaurea);
 
+    -- aggiorno il tipo di utente 
+    UPDATE utenti SET tipo = 'ex_studente' WHERE id = _id;
+
+    -- inserisco nell'archivio le vecchie iscrizioni dello studente
+    WITH iscrizioni_studente AS (
+        DELETE FROM iscrizioniesami AS I
+        WHERE I.studente = _id
+        RETURNING I.*
+    )
+    INSERT INTO storicoiscrizioni SELECT * FROM iscrizioni_studente;
+
+    -- inserisco nell'archivio le vecchie valutazioni dello studente
+    WITH valutazioni_studente AS (
+        DELETE FROM esitiesami AS E
+        WHERE E.studente = _id
+        RETURNING E.*
+    )
+    INSERT INTO storicovalutazioni SELECT * FROM valutazioni_studente;
+
+    -- elimina lo studete
+    DELETE FROM studenti WHERE id = _id;
     END;
 $$;
 

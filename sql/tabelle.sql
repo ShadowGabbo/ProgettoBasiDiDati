@@ -74,14 +74,14 @@ CREATE TABLE propedeuticita (
 )
 
 CREATE TABLE storicoIscrizioni (
-    studente uuid NOT NULL REFERENCES storicoStudenti(id) ON UPDATE CASCADE ON DELETE CASCADE
-    appello uuid NOT NULL REFERENCES appello(id) ON UPDATE CASCADE
+    studente uuid NOT NULL REFERENCES storicostudenti(id) ON UPDATE CASCADE,
+    appello uuid NOT NULL REFERENCES appelli(id) ON UPDATE CASCADE,
     PRIMARY KEY (appello, studente)
 )
 
-CREATE TABLE storicoEsiti (
-    studente uuid NOT NULL REFERENCES storicoStudenti(id) ON UPDATE CASCADE ON DELETE CASCADE
-    appello uuid NOT NULL REFERENCES appello(id) ON UPDATE CASCADE
+CREATE TABLE storicoValutazioni (
+    studente uuid NOT NULL REFERENCES storicostudenti(id) ON UPDATE CASCADE,
+    appello uuid NOT NULL REFERENCES appelli(id) ON UPDATE CASCADE,
     voto INTEGER CHECK (voto BETWEEN 0 AND 31),
     PRIMARY KEY (appello, studente)
 )
