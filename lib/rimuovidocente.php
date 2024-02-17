@@ -13,7 +13,7 @@
                 redirect('../segreteria/visualizzadocenti.php');
             }else{
                 $_SESSION['remove_teacher'] = false;
-                $error = parseError(pg_last_error());
+                //$error = parseError(pg_last_error());
                 redirect('../segreteria/visualizzadocenti.php');
                 }
         }else{

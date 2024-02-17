@@ -1,3 +1,30 @@
+-- restituisce uno studente dato il proprio id
+CREATE OR REPLACE FUNCTION get_student(
+    _id_studente uuid
+) 
+RETURNS TABLE(
+    _id uuid,
+    _nome text,
+    _cognome text,
+    _email text,
+    _matricola char(6),
+    _corso varchar(6)
+) 
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+    BEGIN    
+        SET search_path TO unimia;
+
+        RETURN QUERY
+        SELECT U.id, U.nome, U.cognome, U.email, S.matricola, C.id
+        FROM utenti AS U 
+        INNER JOIN studenti AS S ON S.id = U.id
+        INNER JOIN corsidilaurea AS C ON C.id = S.corsodilaurea
+        WHERE U.id = _id_studente;
+    END;
+$$;
+
 -- restituisce tutti gli studenti
 CREATE OR REPLACE FUNCTION get_all_students() 
 RETURNS TABLE(

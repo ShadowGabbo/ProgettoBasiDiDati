@@ -543,3 +543,19 @@ function remove_iscrizione_esame($id_appello, $id_studente){
     close_pg_connection($db);
     return $result;
 }
+
+function get_student($id){
+    $db = open_pg_connection();
+    $params = array($id);
+    $sql = "select * from unimia.get_student($1);";
+    $result = pg_prepare($db, 'rimuovi iscrizione', $sql);
+    $result = pg_execute($db, 'rimuovi iscrizione', $params);
+    close_pg_connection($db);
+    $res = pg_fetch_assoc($result);
+    $id = $res['_id'];
+    $nome = $res['nome'];
+    $cognome = $res['cognome'];
+
+    print_r($res);
+    return $res;
+}

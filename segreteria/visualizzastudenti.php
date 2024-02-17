@@ -51,6 +51,7 @@
             <th scope="col">Matricola</th>
             <th scope="col">Corso di Laurea</th>
             <th scope="col">Elimina studente</th>
+            <th scope="col">Modifica studente</th>
         </tr>
     </thead>
     <tbody>
@@ -75,6 +76,12 @@
                             <li><a class="dropdown-item" href='../lib/rimuovistudente.php?id=<?php echo $id?>&motivazione=laurea'>Laurea</a></li>
                     </ul>
                     </div>
+                </td>
+                <td>
+                <form action='modificastudente.php' method='POST'>
+                    <input type='hidden' name="id_studente" value='<?php echo $id;?>'>
+                    <button type="submit" class="btn btn-primary">Modifica studente</button>
+                </form>
                 </td>
             </tr>
         <?php } ?>
