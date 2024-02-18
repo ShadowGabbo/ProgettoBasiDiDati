@@ -29,6 +29,9 @@
             <li class="nav-item">
             <a class="nav-link" href="registraesiti.php">Registra esiti</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="profilo.php">Profilo</a>
+          </li>
             <li class="nav-item">
             <a class="nav-link" href="#">Esci</a>
             </li>
