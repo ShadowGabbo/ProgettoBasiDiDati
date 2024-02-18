@@ -610,3 +610,20 @@ function update_teacher($id, $nome, $cognome, $email){
     close_pg_connection($db);
     return $result;
 }
+
+function get_cdl($id){
+    $db = open_pg_connection();
+    $params = array($id);
+    $sql = "select * from unimia.get_cdl($1);";
+    $result = pg_prepare($db, 'ottieni cdl', $sql);
+    $result = pg_execute($db, 'ottieni cdl', $params);
+    close_pg_connection($db);
+
+    $res = pg_fetch_assoc($result);
+    $id = $res['_id'];
+    $nome = $res['_nome'];
+    $cognome = $res['_tipo'];
+    $email = $res['_descrizione'];
+    $teacher = array($id, $nome, $cognome, $email);
+    return $teacher;
+}

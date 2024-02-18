@@ -49,6 +49,7 @@
             <th scope="col">Tipo</th>
             <th scope="col">Descrizione</th>
             <th scope="col">Elimina cdl</th>
+            <th scope="col">Modifica cdl</th>
         </tr>
     </thead>
     <tbody>
@@ -62,6 +63,12 @@
                     <input type='hidden' name="id" value='<?php echo $corso[0]; ?>'>
                     <td><button type="submit" class="btn btn-danger">Elimina</button></td>
                 </form>
+                <td>
+                <form action='modificacdl.php' method='POST'>
+                    <input type='hidden' name="id_corso" value='<?php echo $corso[0];?>'>
+                    <button type="submit" class="btn btn-primary">Modifica corso</button>
+                </form>
+                </td>
             </tr>
         <?php } ?>
     </table>

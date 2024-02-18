@@ -97,6 +97,30 @@ AS $$
     END;
 $$;
 
+-- restituisce il corso di studio dato il suo id
+CREATE OR REPLACE FUNCTION get_cdl (
+    _id_corso varchar(6)
+)
+RETURNS TABLE (
+    _id varchar(6),
+    _nome text,
+    _tipo TIPO_CORSO_LAUREA,
+    _descrizione text
+)
+LANGUAGE plpgsql
+AS $$
+    BEGIN
+
+    SET search_path TO unimia;
+
+    RETURN QUERY
+    SELECT C.id, C.nome, C.tipo, C.descrizione
+    FROM corsidilaurea AS C 
+    WHERE C.id = _id_corso;
+
+    END;
+$$;
+
 -- restituisce tutti i corsi di laurea (cdl)
 CREATE OR REPLACE FUNCTION get_all_courses() 
 RETURNS TABLE(
