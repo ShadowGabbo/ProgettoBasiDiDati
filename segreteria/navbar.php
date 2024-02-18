@@ -46,6 +46,9 @@
           </ul>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="profilo.php">Profilo</a>
+          </li>
+        <li class="nav-item">
         <a class="nav-link" href="#">Esci</a>
         </li>
         </ul>
