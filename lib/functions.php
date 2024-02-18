@@ -467,8 +467,27 @@ function get_esiti_studente($id){
         array_push($esiti, $esito);
     }
     return $esiti;
-
 }
+
+function get_esiti_exstudente($id){
+    $db = open_pg_connection();
+    $params = array($id);
+    $sql = "SELECT * FROM unimia.get_voti_exstudente($1);";
+    $result = pg_prepare($db, 'exstudente esiti', $sql);
+    $result = pg_execute($db, 'exstudente esiti', $params);
+    close_pg_connection($db);
+    
+    $esiti = array();
+    while($row = pg_fetch_assoc($result)){
+        $nome_insegnamento = $row['_nome_insegnamento'];
+        $data = $row['_data'];
+        $voto = $row['_voto'];
+        $esito = array($nome_insegnamento, $data, $voto);
+        array_push($esiti, $esito);
+    }
+    return $esiti;
+}
+
 /**
  * Resituisce gli esami che il docente puo' valutare
  */

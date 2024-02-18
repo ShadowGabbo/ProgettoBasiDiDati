@@ -27,6 +27,9 @@
                     case 'segretario':
                         redirect('../segreteria/home.php');
                         break;
+                    case 'ex_studente':
+                        redirect('../ex_studente/home.php');
+                        break;
                     default:
                         redirect('../index.php');
                         break;

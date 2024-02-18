@@ -421,6 +421,31 @@ AS $$
     END;
 $$;
 
+-- (CARRIERA COMPLETA EX-STUDENTE)
+-- restituisce tutte le valutazioni per un ex-studente
+CREATE OR REPLACE FUNCTION get_voti_exstudente(
+    _studente uuid
+)RETURNS TABLE (
+    _id_insegnamento varchar(6),
+    _nome_insegnamento text,
+    _data DATE,
+    _voto integer
+)
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+    BEGIN    
+        SET search_path TO unimia;
+
+        RETURN QUERY
+        SELECT I.id, I.nome, A.data, V.voto
+        FROM storicovalutazioni AS V
+        INNER JOIN appelli AS A ON A.id = V.appello
+        INNER JOIN insegnamenti AS I ON I.id = A.insegnamento
+        WHERE V.studente = _studente;
+    END;
+$$;
+
 -- restituisce la carrriera valida di uno studente
 -- ossia restituisce tutti i voti degli esami piu recenti superati
 CREATE OR REPLACE FUNCTION get_carriera_valida_studente(

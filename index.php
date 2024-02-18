@@ -42,6 +42,7 @@
                 <div class="mb-3">
                     <select class="form-select" aria-label="Default select example" name="tipo">
                         <option selected value="studente">Studente (@studente.it)</option>
+                        <option value="ex_studente">Ex-studente (@studente.it)</option>
                         <option value="docente">Docente (@docente.it)</option>
                         <option value="segretario">Segreteria (@segreteria.it)</option>
                     </select>
