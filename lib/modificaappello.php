@@ -5,7 +5,7 @@
     session_start();
 
     if (isset($_POST)){
-        if (!empty($_POST['id']) && !empty($_POST['tipo']) && !empty($_POST['nome']) && !empty($_POST['descrizione'])) {
+        if (!empty($_POST['id']) && !empty($_POST['luogo']) && !empty($_POST['orario']) && !empty($_POST['data']) && !empty($_POST['insegnamento'])) {
             $orario = $_POST['orario'];
             $luogo = $_POST['luogo'];
             $data = $_POST['data'];
@@ -15,7 +15,7 @@
             if ($ok) {
                 redirect('../docente/calendarioesami.php');
             }else{
-                $error = parseError(pg_last_error());
+                //$error = parseError(pg_last_error());
                 redirect('../docente/calendarioesami.php');
             }
         }else{

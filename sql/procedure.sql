@@ -300,7 +300,40 @@ AS $$
     END;
 $$;
 
--- TO DO FARE UPDATE APPELLO
+-- modifica le informazioni di un appello controllando la data nel db e quella da inserire
+CREATE OR REPLACE PROCEDURE update_appello (
+    _id uuid,
+    _data DATE, 
+    _orario TIME, 
+    _luogo text,
+    _insegnamento varchar(6)
+)
+LANGUAGE plpgsql
+    AS $$
+    DECLARE _old DATE;
+    BEGIN
+        SET search_path TO unimia;
+
+        SELECT data INTO _old FROM appelli WHERE id = _id;
+
+        -- se faccio un update su una data passata
+        IF NOW() > _old THEN
+            raise exception 'Appello passato, non può essere modificato';
+        END IF;
+
+        -- se la data che sto per mettere e' nel passato
+        IF NOW() > _data THEN
+            raise exception 'Appello non deve essere nel passato';
+        END IF;
+
+        UPDATE appelli SET
+            data = _data,
+            orario = _orario,
+            luogo = _luogo
+        WHERE id = _id;
+
+    END;
+$$;
 
 -- elimina un appello dato il suo codice
 -- l'appello non viene cancellato se sono presenti foreing key
