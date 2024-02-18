@@ -50,6 +50,31 @@ AS $$
     END;
 $$;
 
+-- restituisce un docente dato il suo id
+CREATE OR REPLACE FUNCTION get_teacher (
+  _id_teacher uuid
+)
+RETURNS TABLE (
+    _id uuid,
+    _nome TEXT,
+    _cognome TEXT,
+    _email TEXT
+)
+LANGUAGE plpgsql
+AS $$
+    BEGIN
+
+    SET search_path TO unimia;
+
+    RETURN QUERY
+    SELECT U.id, U.nome, U.cognome, U.email
+    FROM docenti AS D
+    INNER JOIN utenti AS U ON U.id = D.id
+    WHERE U.id = _id_teacher;
+
+    END;
+$$;
+
 -- restituisce tutti i docenti
 CREATE OR REPLACE FUNCTION get_all_teachers() 
 RETURNS TABLE(

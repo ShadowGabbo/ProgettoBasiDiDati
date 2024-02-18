@@ -48,6 +48,7 @@
             <th scope="col">Cognome</th>
             <th scope="col">Email</th>
             <th scope="col">Elimina docente</th>
+            <th scope="col">Modifica docente</th>
         </tr>
     </thead>
     <tbody>
@@ -61,6 +62,12 @@
                     <input type='hidden' name="id" value='<?php echo $teacher[0]; ?>'>
                     <td><button type="submit" class="btn btn-danger">Elimina</button></td>
                 </form>
+                <td>
+                <form action='modificadocente.php' method='POST'>
+                    <input type='hidden' name="id_docente" value='<?php echo $teacher[0];?>'>
+                    <button type="submit" class="btn btn-primary">Modifica docente</button>
+                </form>
+                </td>
             </tr>
         <?php } ?>
     </table>

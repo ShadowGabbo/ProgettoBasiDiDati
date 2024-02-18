@@ -75,6 +75,28 @@ AS $$
     END;
 $$;
 
+-- modifica un docente dato il suo id
+CREATE OR REPLACE PROCEDURE update_teacher (
+    _id uuid,
+    _nome TEXT,
+    _cognome TEXT,
+    _email TEXT
+)
+LANGUAGE plpgsql
+AS $$
+    BEGIN
+
+        SET search_path TO unimia;
+
+        UPDATE utenti SET
+            nome = _nome,
+            cognome = _cognome, 
+            email = _email
+        WHERE id = _id;
+
+    END;
+$$;
+
 -- aggiunge un nuovo segretario/a
 -- aggiunge anche le sue credenziali nella tabella utenti
 CREATE OR REPLACE PROCEDURE add_secretary(

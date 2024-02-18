@@ -573,3 +573,30 @@ function update_student($id, $nome, $cognome, $email, $matricola, $cdl){
     close_pg_connection($db);
     return $result;
 }
+
+function get_teacher($id){
+    $db = open_pg_connection();
+    $params = array($id);
+    $sql = "select * from unimia.get_teacher($1);";
+    $result = pg_prepare($db, 'ottieni docente', $sql);
+    $result = pg_execute($db, 'ottieni docente', $params);
+    close_pg_connection($db);
+
+    $res = pg_fetch_assoc($result);
+    $id = $res['_id'];
+    $nome = $res['_nome'];
+    $cognome = $res['_cognome'];
+    $email = $res['_email'];
+    $teacher = array($id, $nome, $cognome, $email);
+    return $teacher;
+}
+
+function update_teacher($id, $nome, $cognome, $email){
+    $db = open_pg_connection();
+    $params = array($id, $nome, $cognome, $email);
+    $sql = "CALL unimia.update_teacher($1, $2, $3, $4);";
+    $result = pg_prepare($db, 'modifica docente', $sql);
+    $result = pg_execute($db, 'modifica docente', $params);
+    close_pg_connection($db);
+    return $result;
+}
