@@ -695,3 +695,13 @@ function update_insegnamento($id, $nome, $descrizione, $anno, $cfu, $corso, $doc
     close_pg_connection($db);
     return $result;
 }
+
+function remove_appello($id){
+    $db = open_pg_connection();
+    $params = array($id);
+    $sql = "CALL unimia.delete_appello($1);";
+    $result = pg_prepare($db, 'rimuovi appello', $sql);
+    $result = pg_execute($db, 'rimuovi appello', $params);
+    close_pg_connection($db);
+    return $result;
+}

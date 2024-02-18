@@ -34,6 +34,7 @@
             <th scope="col">Data</th>
             <th scope="col">Orario</th>
             <th scope="col">Luogo</th>
+            <th scope="col">Elimina appello</th>
         </tr>
     </thead>
     <tbody>
@@ -45,6 +46,10 @@
                 <td><?php print($appello[3]) ?></td>
                 <td><?php print($appello[4]) ?></td>
                 <td><?php print($appello[5]) ?></td>
+                <form action='../lib/rimuoviappello.php' method='get'>
+                    <input type='hidden' name="id" value='<?php echo $appello[0]; ?>'>
+                    <td><button type="submit" class="btn btn-danger">Elimina</button></td>
+                </form>
             </tr>
         <?php } ?>
     </table>

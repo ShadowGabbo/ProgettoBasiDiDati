@@ -300,6 +300,21 @@ AS $$
     END;
 $$;
 
+-- elimina un appello dato il suo codice
+-- l'appello non viene cancellato se sono presenti foreing key
+CREATE OR REPLACE PROCEDURE delete_appello (
+    _id_appello uuid
+)
+LANGUAGE plpgsql
+    AS $$
+    BEGIN
+        SET search_path TO unimia;
+
+        DELETE FROM appelli WHERE id = _id_appello;
+
+    END;
+$$;
+
 -- aggiunge l'iscrizione dello studente per un appello
 CREATE OR REPLACE PROCEDURE add_iscrizione_studente (
   _id_appello uuid,

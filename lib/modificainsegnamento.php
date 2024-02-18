@@ -17,7 +17,7 @@
             if ($ok) {
                 redirect('../segreteria/visualizzainsegnamenti.php');
             }else{
-                $error = parseError(pg_last_error());
+                //$error = parseError(pg_last_error());
                 redirect('../segreteria/visualizzainsegnamenti.php');
             }
         }else{
