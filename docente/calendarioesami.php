@@ -35,6 +35,7 @@
             <th scope="col">Orario</th>
             <th scope="col">Luogo</th>
             <th scope="col">Elimina appello</th>
+            <th scope="col">Modifica appello</th>
         </tr>
     </thead>
     <tbody>
@@ -50,6 +51,12 @@
                     <input type='hidden' name="id" value='<?php echo $appello[0]; ?>'>
                     <td><button type="submit" class="btn btn-danger">Elimina</button></td>
                 </form>
+                <td>
+                <form action='modificaappello.php' method='POST'>
+                    <input type='hidden' name="id_appello" value='<?php echo $appello[0];?>'>
+                    <button type="submit" class="btn btn-primary">Modifica appello</button>
+                </form>
+                </td>
             </tr>
         <?php } ?>
     </table>

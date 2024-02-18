@@ -276,6 +276,30 @@ AS $$
     END;
 $$;
 
+-- restituisce un appello dato il suo id
+CREATE OR REPLACE FUNCTION get_appello(
+    _id_appello uuid
+)
+RETURNS TABLE (
+    _id uuid,
+    _data DATE,
+    _orario TIME,
+    _luogo text,
+    _id_insegnamento varchar(6)
+)
+LANGUAGE plpgsql
+AS $$
+    BEGIN
+    SET search_path TO unimia;
+
+    RETURN QUERY
+    SELECT A.id, A.data, A.orario, A.luogo, A.insegnamento
+    FROM appelli AS A 
+    WHERE A.id = _id_appello;
+
+    END;
+$$;
+
 /*
  * Restituisce tutti gli appelli per uno studente
  * (Gli appelli del proprio corso di studio del futuro)

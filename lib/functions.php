@@ -705,3 +705,31 @@ function remove_appello($id){
     close_pg_connection($db);
     return $result;
 }
+
+function get_appello($id_appello){
+    $db = open_pg_connection();
+    $params = array($id_appello);
+    $sql = "select * from unimia.get_appello($1);";
+    $result = pg_prepare($db, 'ottieni appello', $sql);
+    $result = pg_execute($db, 'ottieni appello', $params);
+    close_pg_connection($db);
+
+    $res = pg_fetch_assoc($result);
+    $id = $res['_id'];
+    $data = $res['_data'];
+    $orario = $res['_orario'];
+    $luogo = $res['_luogo'];
+    $id_insegnamento = $res['_id_insegnamento'];
+    $appello = array($id, $data, $orario, $luogo, $id_insegnamento);
+    return $appello;
+}
+
+function update_appello($id, $data, $orario, $luogo, $insegnamento){
+    $db = open_pg_connection();
+    $params = array($id, $data, $orario, $luogo, $insegnamento);
+    $sql = "CALL unimia.update_appello($1, $2, $3, $4, $5);";
+    $result = pg_prepare($db, 'modifica appello', $sql);
+    $result = pg_execute($db, 'modifica appello', $params);
+    close_pg_connection($db);
+    return $result;
+}

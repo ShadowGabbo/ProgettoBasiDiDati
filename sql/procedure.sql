@@ -300,6 +300,8 @@ AS $$
     END;
 $$;
 
+-- TO DO FARE UPDATE APPELLO
+
 -- elimina un appello dato il suo codice
 -- l'appello non viene cancellato se sono presenti foreing key
 CREATE OR REPLACE PROCEDURE delete_appello (
