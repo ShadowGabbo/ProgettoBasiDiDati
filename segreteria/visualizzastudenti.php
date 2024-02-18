@@ -52,6 +52,8 @@
             <th scope="col">Corso di Laurea</th>
             <th scope="col">Elimina studente</th>
             <th scope="col">Modifica studente</th>
+            <th scope="col">Visualizza carriera completa</th>
+            <th scope="col">Visualizza carriera valida</th>
         </tr>
     </thead>
     <tbody>
@@ -83,6 +85,15 @@
                     <button type="submit" class="btn btn-primary">Modifica studente</button>
                 </form>
                 </td>
+                
+                <form action='visualizzacarrieracompleta.php' method='POST'>
+                    <input type='hidden' name="id_studente" value='<?php echo $id;?>'>
+                    <td><button type="submit" class="btn btn-success">Visualizza</button></td>
+                </form>
+                <form action='visualizzacarrieravalida.php' method='POST'>
+                    <input type='hidden' name="id_studente" value='<?php echo $id;?>'>
+                    <td><button type="submit" class="btn btn-success">Visualizza</button></td>
+                </form>
             </tr>
         <?php } ?>
     </table>

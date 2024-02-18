@@ -266,6 +266,8 @@ AS $$
             raise exception 'Non sono state rispettate le propedeuticità';
         END IF;
 
+        -- controllo che l'esame non sia nel passato
+
         RETURN NEW;
     END;
 $$;
@@ -278,10 +280,3 @@ CREATE OR REPLACE TRIGGER i_controllo_iscrizione
     ON iscrizioniesami
     FOR EACH ROW
     EXECUTE PROCEDURE controllo_iscrizione();
-
--- TO-DO
--- DA FARE LA FUNZIONE 
-CREATE OR REPLACE TRIGGER d_archivia_studente
-    BEFORE DELETE ON studenti
-    FOR EACH ROW
-    EXECUTE PROCEDURE archivia_studente();
