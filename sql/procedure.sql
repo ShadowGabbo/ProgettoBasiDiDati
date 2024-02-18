@@ -222,6 +222,45 @@ AS $$
     END;
 $$;
 
+-- modifica le info base di un insegnamento dato il suo id e le nuove infomazioni
+CREATE OR REPLACE PROCEDURE edit_insegnamento (
+  _codice VARCHAR(6),
+  _new_codice VARCHAR(6),
+  _corso_di_laurea VARCHAR(6),
+  _nome TEXT,
+  _descrizione TEXT,
+  _anno ANNO_INSEGNAMENTO,
+  _responsabile uuid,
+  _propedeuiticita VARCHAR(6)[]
+)
+
+-- modifica un insegnamento con i nuovi dati
+CREATE OR REPLACE PROCEDURE update_insegnamento(
+    _id varchar(6), 
+    _nome text, 
+    _descrizione text, 
+    _anno TIPO_ANNO, 
+    _cfu smallint, 
+    _corso varchar(6), 
+    _docente uuid
+)
+LANGUAGE plpgsql
+AS $$
+    BEGIN
+        SET search_path TO unimia;
+
+        UPDATE insegnamenti SET
+            id = _id, 
+            corsodilaurea = _corso,
+            nome = _nome,
+            descrizione = _descrizione, 
+            cfu = _cfu,
+            anno = _anno,
+            docente = _docente
+        WHERE id = _id;
+    END;
+$$;
+
 -- elimina un insegnamento dato il suo id
 -- l'insegnamento non viene cancellato se presenti foreing key
 CREATE OR REPLACE PROCEDURE delete_insegnamento (

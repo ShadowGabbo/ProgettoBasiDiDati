@@ -685,3 +685,13 @@ function get_insegnamento($id){
     }
     return $insegnamento;
 }
+
+function update_insegnamento($id, $nome, $descrizione, $anno, $cfu, $corso, $docente){
+    $db = open_pg_connection();
+    $params = array($id, $nome, $descrizione, $anno, $cfu, $corso, $docente);
+    $sql = "CALL unimia.update_insegnamento($1, $2, $3, $4, $5, $6, $7);";
+    $result = pg_prepare($db, 'modifica insegnamento', $sql);
+    $result = pg_execute($db, 'modifica insegnamento', $params);
+    close_pg_connection($db);
+    return $result;
+}
