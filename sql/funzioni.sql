@@ -478,3 +478,35 @@ AS $$
 
     END;
 $$;
+
+-- restituisce la carrriera valida di un ex-studente
+CREATE OR REPLACE FUNCTION get_carriera_valida_exstudente(
+    _studente uuid
+)RETURNS TABLE (
+    _id_insegnamento varchar(6),
+    _nome_insegnamento text,
+    _data DATE,
+    _voto integer
+)
+LANGUAGE plpgsql
+AS $$
+    DECLARE 
+    BEGIN    
+        SET search_path TO unimia;
+
+        RETURN QUERY
+        SELECT I1.id ,I1.nome ,A1.data ,S1.voto
+        FROM storicovalutazioni AS S1
+        INNER JOIN appelli AS A1 ON S1.appello = A1.id
+        INNER JOIN insegnamenti AS I1 ON I1.id = A1.insegnamento
+        WHERE S1.studente = _studente AND (I1.id, A1.data) IN (
+            SELECT I2.id, MAX(A2.data)
+            FROM storicovalutazioni AS S2
+            INNER JOIN appelli AS A2 ON S2.appello = A2.id
+            INNER JOIN insegnamenti AS I2 ON I2.id = A2.insegnamento
+            WHERE S2.studente = _studente
+            GROUP BY I2.id
+        )AND S1.voto >= 18;
+
+    END;
+$$;

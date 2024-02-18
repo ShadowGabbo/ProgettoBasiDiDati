@@ -533,6 +533,27 @@ function get_carriera_valida($id_studente){
     return $esiti;
 }
 
+// carriera valida di un exstudente
+function get_carriera_valida_exstudente($id_studente){
+    $db = open_pg_connection();
+    $params = array($id_studente);
+    $sql = "SELECT * FROM unimia.get_carriera_valida_exstudente($1);";
+    $result = pg_prepare($db, 'exstudente esiti', $sql);
+    $result = pg_execute($db, 'exstudente esiti', $params);
+    close_pg_connection($db);
+    
+    $esiti = array();
+    while($row = pg_fetch_assoc($result)){
+        $id_insegnamento = $row['_id_insegnamento'];
+        $nome_insegnamento = $row['_nome_insegnamento'];
+        $data = $row['_data'];
+        $voto = $row['_voto'];
+        $esito = array($id_insegnamento, $nome_insegnamento, $data, $voto);
+        array_push($esiti, $esito);
+    }
+    return $esiti;
+}
+
 function remove_student($id, $motivazione){
     $db = open_pg_connection();
     $params = array($motivazione, $id);
