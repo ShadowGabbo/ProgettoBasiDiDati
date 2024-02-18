@@ -648,3 +648,40 @@ function update_cdl($id, $nome, $tipo, $descrizione){
     close_pg_connection($db);
     return $result;
 }
+
+function get_insegnamento($id){
+    $db = open_pg_connection();
+    $params = array($id);
+    $sql = "select * from unimia.get_insegnamento($1);";
+    $result = pg_prepare($db, 'ottieni insegnamento', $sql);
+    $result = pg_execute($db, 'ottieni insegnamento', $params);
+    close_pg_connection($db);
+
+    // prendo le info generali dell'insegnamento
+    $res = pg_fetch_assoc($result);
+    $id = $res['_id'];
+    $nome = $res['_nome'];
+    $descrizione = $res['_descrizione'];
+    $anno = $res['_anno'];
+    $cfu = $res['_cfu'];
+    $corso = $res['_corso_di_laurea'];
+    $docente = $res['_docente'];
+    $insegnamento = array($id, $nome, $descrizione, $anno, $cfu, $corso, $docente);
+
+    // prendo le info sugli insegnamenti propedetici
+    $db = open_pg_connection();
+    $params = array($id);
+    $sql = "select * from unimia.get_all_insegnamenti_propedeutici($1);";
+    $result = pg_prepare($db, 'ottieni propedeutici', $sql);
+    $result = pg_execute($db, 'ottieni propedeutici', $params);
+    close_pg_connection($db);
+
+    $res = pg_fetch_assoc($result);
+    if ($res){
+        $propedeutici = $res['_propedeutici'];
+        array_push($insegnamento, $propedeutici);
+    }else{
+        array_push( $insegnamento, '');
+    }
+    return $insegnamento;
+}

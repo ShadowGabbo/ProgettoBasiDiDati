@@ -142,6 +142,32 @@ AS $$
     END;
 $$;
 
+-- restituisce un insegnamento dato il suo id (tranne le info sugli insegnamenti propedeutici)
+CREATE OR REPLACE FUNCTION get_insegnamento(
+    _id_insegnamento varchar(6)
+)
+RETURNS TABLE (
+    _id varchar(6),
+    _nome text,
+    _descrizione text,
+    _anno TIPO_ANNO,
+    _cfu smallint,
+    _corso_di_laurea varchar(6),
+    _docente uuid
+)
+LANGUAGE plpgsql
+AS $$
+    BEGIN
+    SET search_path TO unimia;
+
+    RETURN QUERY
+    SELECT I.id, I.nome, I.descrizione, I.anno, I.cfu, I.corsodilaurea, I.docente
+    FROM insegnamenti AS I 
+    WHERE I.id = _id_insegnamento;
+
+    END;
+$$;
+
 -- restituisce tutti i corsi di laurea (cdl)
 CREATE OR REPLACE FUNCTION get_all_insegnamenti(
     id_corso varchar(6)

@@ -43,7 +43,7 @@
     </div>
     <button type="submit" class="btn btn-primary">Visualizza gli insegnamenti</button>
     </form>
-
+    <br>
     <?php if (isset($insegnamenti)){ ?>
         <h3>Insegnamenti del corso <?php echo $nome_corso ?>:</h3>
         <table class="table table-dark table-striped">
@@ -56,6 +56,7 @@
             <th scope="col">CFU</th>
             <th scope="col">Nome docente</th>
             <th scope="col">Elimina insegnamento</th>
+            <th scope="col">Modifica insegnamento</th>
         </tr>
     </thead>
     <tbody>
@@ -71,6 +72,12 @@
                     <input type='hidden' name="id" value='<?php echo $insegnamento[0]; ?>'>
                     <td><button type="submit" class="btn btn-danger">Elimina</button></td>
                 </form>
+                <td>
+                <form action='modificainsegnamento.php' method='POST'>
+                    <input type='hidden' name="id_insegnamento" value='<?php echo $insegnamento[0];?>'>
+                    <button type="submit" class="btn btn-primary">Modifica insegnamento</button>
+                </form>
+                </td>
             </tr>
         <?php } ?>
     </table>
