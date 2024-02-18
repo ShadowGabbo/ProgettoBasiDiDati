@@ -22,6 +22,37 @@ AS $$
     END;
 $$;
 
+-- modifica uno studente dato il suo id
+CREATE OR REPLACE PROCEDURE update_student (
+    _id uuid,
+    _nome TEXT,
+    _cognome TEXT,
+    _email TEXT,
+    _matricola CHAR(6),
+    _corso_di_laurea VARCHAR(6)
+)
+  LANGUAGE plpgsql
+  AS $$
+    BEGIN
+
+    SET search_path TO unimia;
+
+    -- modifico le informaazioni quali nome cognome ed email
+    UPDATE utenti SET
+        nome = _nome,
+        cognome = _cognome,
+        email = _email
+    WHERE id = _id;
+
+    -- modifico la matricola e il cdl
+    UPDATE studenti SET
+        matricola = _matricola,
+        corsodilaurea = _corso_di_laurea
+    WHERE id = _id;
+
+    END;
+$$;
+
 -- aggiunge un nuovo docente
 -- aggiunge anche le sue credenziali nella tabella utenti
 CREATE OR REPLACE PROCEDURE add_teacher(

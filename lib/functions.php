@@ -551,11 +551,25 @@ function get_student($id){
     $result = pg_prepare($db, 'rimuovi iscrizione', $sql);
     $result = pg_execute($db, 'rimuovi iscrizione', $params);
     close_pg_connection($db);
+
     $res = pg_fetch_assoc($result);
     $id = $res['_id'];
-    $nome = $res['nome'];
-    $cognome = $res['cognome'];
+    $nome = $res['_nome'];
+    $cognome = $res['_cognome'];
+    $email = $res['_email'];
+    $matricola = $res['_matricola'];
+    $corso = $res['_corso'];
+    $student = array($id, $nome, $cognome, $email, $matricola, $corso);
+    //print_r($student);
+    return $student;
+}
 
-    print_r($res);
-    return $res;
+function update_student($id, $nome, $cognome, $email, $matricola, $cdl){
+    $db = open_pg_connection();
+    $params = array($id, $nome, $cognome, $email, $matricola, $cdl);
+    $sql = "CALL unimia.update_student($1, $2, $3, $4, $5, $6);";
+    $result = pg_prepare($db, 'modifica iscrizione', $sql);
+    $result = pg_execute($db, 'modifica iscrizione', $params);
+    close_pg_connection($db);
+    return $result;
 }
