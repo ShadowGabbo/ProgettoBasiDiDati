@@ -5,18 +5,19 @@
     session_start();
 
     if (isset($_POST)){
-        if (!empty($_POST['id']) && !empty($_POST['email']) && !empty($_POST['nome']) && !empty($_POST['cognome'])) {
-            $email = $_POST['email'];
+        if (!empty($_POST['id']) && !empty($_POST['tipo']) && !empty($_POST['nome']) && !empty($_POST['descrizione'])) {
+            $descrizione = $_POST['descrizione'];
             $nome = $_POST['nome'];
-            $cognome = $_POST['cognome'];
+            $tipo = $_POST['tipo'];
             $id = $_POST['id'];
-            $ok = update_teacher($id, $nome, $cognome, $email);
+            $ok = update_cdl($id, $nome, $tipo, $descrizione);
             if ($ok) {
-                redirect('../segreteria/visualizzadocenti.php');
+                redirect('../segreteria/visualizzacorsi.php');
             }else{
-                redirect('../segreteria/visualizzadocenti.php');
+                $error = parseError(pg_last_error());
+                redirect('../segreteria/visualizzacorsi.php');
             }
         }else{
-            redirect('../segreteria/visualizzadocenti.php');
+            redirect('../segreteria/visualizzacorsi.php');
         }
     }

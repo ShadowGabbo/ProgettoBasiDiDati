@@ -136,6 +136,28 @@ AS $$
     END;
 $$;
 
+-- modifica un corso di studio dato il suo codice
+CREATE OR REPLACE PROCEDURE update_cdl(
+    _id varchar(6),
+    _nome TEXT,
+    _tipo TIPO_CORSO_LAUREA,
+    _descrizione TEXT
+)
+LANGUAGE plpgsql
+AS $$
+    BEGIN
+
+        SET search_path TO unimia;
+
+        UPDATE corsidilaurea SET
+            nome = _nome,
+            tipo = _tipo, 
+            descrizione = _descrizione
+        WHERE id = _id;
+
+    END;
+$$;
+
 -- elimina un corso di laurea dato il suo codice
 -- non viene cancellato in caso siano presenti foreing key
 CREATE OR REPLACE PROCEDURE delete_cdl(

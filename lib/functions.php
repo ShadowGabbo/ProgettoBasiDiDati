@@ -627,3 +627,13 @@ function get_cdl($id){
     $teacher = array($id, $nome, $cognome, $email);
     return $teacher;
 }
+
+function update_cdl($id, $nome, $tipo, $descrizione){
+    $db = open_pg_connection();
+    $params = array($id, $nome, $tipo, $descrizione);
+    $sql = "CALL unimia.update_cdl($1, $2, $3, $4);";
+    $result = pg_prepare($db, 'modifica cdl', $sql);
+    $result = pg_execute($db, 'modifica cdl', $params);
+    close_pg_connection($db);
+    return $result;
+}
