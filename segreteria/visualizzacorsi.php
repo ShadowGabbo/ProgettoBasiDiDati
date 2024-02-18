@@ -22,6 +22,24 @@
   <body>
   <div class="container-fluid">
     <?php include_once("navbar.php"); ?>
+    <?php
+        if (isset($_SESSION['remove_cdl'])){
+            if ($_SESSION['remove_cdl'] == false){
+                ?>
+                    <div class="alert alert-danger" role="alert">
+                        Non e' possibile eliminare il corso perche' presenta insegnamenti o studenti iscritti ad esso
+                    </div>
+                <?php
+            }else{
+                ?>
+                    <div class="alert alert-success" role="alert">
+                        Eliminato corso di studio correttamente
+                    </div>
+                <?php
+            }
+        }
+    ?>
+
     <h1>Visualizza corsi di laurea (cdl)</h1>
     <table class="table table-dark table-striped">
         <thead>
@@ -30,6 +48,7 @@
             <th scope="col">Nome</th>
             <th scope="col">Tipo</th>
             <th scope="col">Descrizione</th>
+            <th scope="col">Elimina cdl</th>
         </tr>
     </thead>
     <tbody>
@@ -39,6 +58,10 @@
                 <td><?php print($corso[1]) ?></td>
                 <td><?php print($corso[2]) ?></td>
                 <td><?php print($corso[3]) ?></td>
+                <form action='../lib/rimuovicdl.php' method='get'>
+                    <input type='hidden' name="id" value='<?php echo $corso[0]; ?>'>
+                    <td><button type="submit" class="btn btn-danger">Elimina</button></td>
+                </form>
             </tr>
         <?php } ?>
     </table>

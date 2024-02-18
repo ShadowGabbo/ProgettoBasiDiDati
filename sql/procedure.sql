@@ -136,6 +136,20 @@ AS $$
     END;
 $$;
 
+-- elimina un corso di laurea dato il suo codice
+-- non viene cancellato in caso siano presenti foreing key
+CREATE OR REPLACE PROCEDURE delete_cdl(
+    _id_cdl VARCHAR(6)
+)
+LANGUAGE plpgsql
+AS $$
+    BEGIN    
+        SET search_path TO unimia;
+
+        DELETE FROM corsidilaurea WHERE id = _id_cdl;
+    END;
+$$;
+
 -- modifica la password di un utente
 CREATE OR REPLACE PROCEDURE edit_password(
     _id uuid, 

@@ -544,6 +544,16 @@ function remove_iscrizione_esame($id_appello, $id_studente){
     return $result;
 }
 
+function remove_cdl($id){
+    $db = open_pg_connection();
+    $params = array($id);
+    $sql = "CALL unimia.delete_cdl($1);";
+    $result = pg_prepare($db, 'rimuovi cdl', $sql);
+    $result = pg_execute($db, 'rimuovi cdl', $params);
+    close_pg_connection($db);
+    return $result;
+}
+
 function get_student($id){
     $db = open_pg_connection();
     $params = array($id);
