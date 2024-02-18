@@ -222,6 +222,21 @@ AS $$
     END;
 $$;
 
+-- elimina un insegnamento dato il suo id
+-- l'insegnamento non viene cancellato se presenti foreing key
+CREATE OR REPLACE PROCEDURE delete_insegnamento (
+    _id_insegnamento VARCHAR(6)
+)
+LANGUAGE plpgsql
+AS $$
+    BEGIN
+
+        SET search_path TO unimia;
+
+        DELETE FROM insegnamenti WHERE id = _id_insegnamento;
+    END;
+$$;
+
 -- aggiunge un appello per un insegnamento
 -- crea un appello
 CREATE OR REPLACE PROCEDURE add_appello (

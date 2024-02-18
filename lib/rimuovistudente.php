@@ -15,7 +15,7 @@
                 redirect('../segreteria/visualizzastudenti.php');
             }else{
                 $_SESSION['remove_student'] = false;
-                $error = parseError(pg_last_error());
+                //$error = parseError(pg_last_error());
                 redirect('../segreteria/visualizzastudenti.php');
                 }
         }else{

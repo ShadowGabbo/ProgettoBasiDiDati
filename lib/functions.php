@@ -554,6 +554,17 @@ function remove_cdl($id){
     return $result;
 }
 
+
+function remove_insegnamento($id){
+    $db = open_pg_connection();
+    $params = array($id);
+    $sql = "CALL unimia.delete_insegnamento($1);";
+    $result = pg_prepare($db, 'rimuovi insegnamento', $sql);
+    $result = pg_execute($db, 'rimuovi insegnamento', $params);
+    close_pg_connection($db);
+    return $result;
+}
+
 function get_student($id){
     $db = open_pg_connection();
     $params = array($id);

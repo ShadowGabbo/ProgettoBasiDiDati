@@ -55,6 +55,7 @@
             <th scope="col">Anno erogazione</th>
             <th scope="col">CFU</th>
             <th scope="col">Nome docente</th>
+            <th scope="col">Elimina insegnamento</th>
         </tr>
     </thead>
     <tbody>
@@ -66,6 +67,10 @@
                 <td><?php print($insegnamento[3]) ?></td>
                 <td><?php print($insegnamento[4]) ?></td>
                 <td><?php print($insegnamento[5]) ?></td>
+                <form action='../lib/rimuoviinsegnamento.php' method='get'>
+                    <input type='hidden' name="id" value='<?php echo $insegnamento[0]; ?>'>
+                    <td><button type="submit" class="btn btn-danger">Elimina</button></td>
+                </form>
             </tr>
         <?php } ?>
     </table>
