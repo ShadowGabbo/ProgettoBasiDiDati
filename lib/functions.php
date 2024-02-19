@@ -8,7 +8,7 @@ function redirect($url, $permanent = false) {
 }
 
 /**
- * Per debug
+ * Per debug (trovato su stackoverflow)
  */
 function parseError($error) {
     $startPos = strpos($error, "ERROR:");

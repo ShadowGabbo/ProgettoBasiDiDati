@@ -13,7 +13,7 @@
                 redirect('../segreteria/visualizzacorsi.php');
             }else{
                 $_SESSION['remove_cdl'] = false;
-                $error = parseError(pg_last_error());
+                //$error = parseError(pg_last_error());
                 redirect('../segreteria/visualizzacorsi.php');
                 }
         }else{
