@@ -49,7 +49,7 @@
             <a class="nav-link" href="profilo.php">Profilo</a>
           </li>
         <li class="nav-item">
-        <a class="nav-link" href="#">Esci</a>
+        <a class="nav-link" href="../logout.php">Esci</a>
         </li>
         </ul>
       </div>

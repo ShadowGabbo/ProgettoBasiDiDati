@@ -10,7 +10,7 @@
             <a class="nav-link" href="home.php">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Esci</a>
+          <a class="nav-link" href="../logout.php">Esci</a>
           </li>
         </ul>
       </div>
