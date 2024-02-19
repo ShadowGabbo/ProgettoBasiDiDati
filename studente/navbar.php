@@ -10,13 +10,10 @@
             <a class="nav-link" href="home.php">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="profilo.php">Profilo</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="esami.php">Esami</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="corsidilaurea.php">Corsi di laurea</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="profilo.php">Profilo</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../logout.php">Esci</a>
