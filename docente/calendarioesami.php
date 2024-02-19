@@ -24,7 +24,7 @@
   <div class="container-fluid">
     <?php include_once("navbar.php"); ?>
     <?php if (isset($appelli)){ ?>
-        <h2>Visualizza tutti gli appelli per i suoi insegnamenti</h2>
+        <h2>Visualizza tutti gli esami/appelli degli insegnamenti di cui sei responsabile</h2>
         <table class="table table-dark table-striped">
         <thead>
             <tr>
