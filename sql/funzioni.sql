@@ -168,7 +168,7 @@ AS $$
     END;
 $$;
 
--- restituisce tutti i corsi di laurea (cdl)
+-- restituisce tutti gli insegnamenti di un corso di laurea
 CREATE OR REPLACE FUNCTION get_all_insegnamenti(
     id_corso varchar(6)
 ) 
