@@ -28,37 +28,6 @@ CREATE OR REPLACE TRIGGER i_u_numeroinsegnamenti_docente
     EXECUTE PROCEDURE check_numeroinsegnamenti_docente();
 
 
-CREATE OR REPLACE FUNCTION genera_matricola() RETURNS TRIGGER 
-LANGUAGE plpgsql
-AS $$
-    DECLARE 
-        _matricola char(6);
-    BEGIN
-        SET search_path TO unimia;
-
-        LOOP
-            _matricola := floor(random() * (999999 - 100000 + 1) + 100000)::CHAR(6);
-
-            IF NOT EXISTS (
-                SELECT matricola FROM studenti WHERE matricola = _matricola
-            ) THEN
-                NEW.matricola := _matricola;
-                EXIT;
-            END IF;
-        END LOOP;
-
-        RETURN NEW;
-    END;
-$$;
-
--- aggiunge la matricola quando si aggiungono nuovi stundenti
--- vedere sopra per la procedura
-CREATE OR REPLACE TRIGGER i_genera_matricola
-    BEFORE INSERT ON studenti
-    FOR EACH ROW
-    EXECUTE PROCEDURE genera_matricola();
-
-
 CREATE OR REPLACE FUNCTION check_anno_insegnamento() RETURNS TRIGGER 
 LANGUAGE plpgsql
 AS $$
@@ -220,6 +189,7 @@ AS $$
         _cdl_appello varchar(6);
         _cdl_studente varchar(6);
         _counter integer;
+        _data_appello DATE;
     BEGIN
         SET search_path TO unimia;
 
@@ -267,6 +237,10 @@ AS $$
         END IF;
 
         -- controllo che l'esame non sia nel passato
+        SELECT data INTO _data_appello FROM appelli WHERE id = NEW.appello;
+        IF NOW() > _data_appello THEN
+            raise exception 'Non ci si puo iscrivere ad una data passata';
+        END IF;
 
         RETURN NEW;
     END;
