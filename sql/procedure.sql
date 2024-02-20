@@ -222,18 +222,6 @@ AS $$
     END;
 $$;
 
--- modifica le info base di un insegnamento dato il suo id e le nuove infomazioni
-CREATE OR REPLACE PROCEDURE edit_insegnamento (
-  _codice VARCHAR(6),
-  _new_codice VARCHAR(6),
-  _corso_di_laurea VARCHAR(6),
-  _nome TEXT,
-  _descrizione TEXT,
-  _anno ANNO_INSEGNAMENTO,
-  _responsabile uuid,
-  _propedeuiticita VARCHAR(6)[]
-)
-
 -- modifica un insegnamento con i nuovi dati
 CREATE OR REPLACE PROCEDURE update_insegnamento(
     _id varchar(6), 
