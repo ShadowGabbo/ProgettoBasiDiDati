@@ -1,8 +1,6 @@
 # PROGETTO BASI DI DATI
 
-Sarti Gabriele (975884)
-
-Appello 23 febbraio 2024
+Sarti Gabriele 
 
 Documentazione tecnica al link https://hedgedoc.studentiunimi.it/s/giyB_3kUq (oppure in /docs)
 
